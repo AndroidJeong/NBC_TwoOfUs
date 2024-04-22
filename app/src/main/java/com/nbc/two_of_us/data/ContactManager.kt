@@ -41,6 +41,17 @@ object ContactManager {
     }
 
     /**
+     * 연락처 정보 업데이트 함수
+     */
+    fun update(contact: ContactInfo): Boolean {
+        if (contact.rawContactId !in contacts) {
+            return false
+        }
+        contacts[contact.rawContactId] = contact
+        return true
+    }
+
+    /**
      * 실제 연락처 정보를 가져오기 전에 개발을 위해 더미데이터를 생성하는 함수입니다.
      * 연락처 정보 권한이 개발 완료되면 이 함수를 사용하면 안 되며, 삭제해야 합니다.
      */

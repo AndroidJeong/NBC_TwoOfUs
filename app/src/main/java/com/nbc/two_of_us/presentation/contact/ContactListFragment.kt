@@ -54,7 +54,7 @@ class ContactListFragment : Fragment() {
 
                 val fragmentDetail = ContactDetailFragment()
                 fragmentDetail.arguments = bundle
-                Log.d("여기는 리스트프래드먼트", "${bundle}")
+                Log.d("여기는 리스트프래그먼트", "${bundle}")
 
 //                parentFragmentManager.beginTransaction()
 //                    .replace(R.id.fragment, fragmentDetail)
@@ -68,8 +68,9 @@ class ContactListFragment : Fragment() {
             Log.d("여기는 리스트프래그먼트", "FAB 버튼 이벤트 처리")
 
             val fragmentAddDialog = AddContactDialogFragment()
-            //fragmentAddDialog.show(parentFragmentManager, "AddContackDialogFragmentTag")
+//            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
         }
+
     }
 
     override fun onDestroyView() {

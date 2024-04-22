@@ -134,4 +134,87 @@ object ContactManager {
             add(contact)
         }
     }
+
+    fun createDummy() {
+        val dummy = listOf(
+            ContactInfo(
+                1_5678_0001,
+                "danielle",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_danielle"),
+                "010-5678-0001",
+                "danielle@newjeans.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_5678_0002,
+                "Hanni",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_hanni"),
+                "010-5678-0002",
+                "hanni@newjeans.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_5678_0003,
+                "Hyein",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_hyein"),
+                "010-5678-0003",
+                "hyein@newjeans.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_5678_0004,
+                "Minji",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_minji"),
+                "010-5678-0004",
+                "minji@newjeans.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_1234_0001,
+                "Jin",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_jin"),
+                "010-1234-0001",
+                "jin@bts.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_1234_0002,
+                "RM",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_rm"),
+                "010-1234-0002",
+                "rm@bts.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_1234_0003,
+                "Sugar",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_sugar"),
+                "010-1234-0003",
+                "sugar@bts.com",
+                "",
+                false
+            ),
+            ContactInfo(
+                1_1234_0005,
+                "V",
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_v"),
+                "010-1234-0005",
+                "v@bts.com",
+                "",
+                false
+            ),
+        )
+        for (contact in dummy) {
+            add(contact)
+        }
+    }
+
+
+
 }

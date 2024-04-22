@@ -10,47 +10,37 @@ import androidx.appcompat.app.AppCompatActivity
  */
 class PermissionManager(
     private val activity: AppCompatActivity,
-) {
+){
+    init { registerForPermissionResult() }
 
-    private var requestPermissionLauncher:  ActivityResultLauncher<String>? = null
-
-    /**
-     * 권한을 신청하는 함수입니다.
-     * @param permission 권한을 입력해 주시면 됩니다. ex) Manifest.permission.READ_CONTACTS
-     * */
-    fun getPermission(permission: String) = requestPermissionLauncher?.launch(permission)
+    private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
+    private var onGranted: () -> Unit = {}
+    private var onDenied: () -> Unit = {}
 
     /**
      * Permission 처리 결과에 대한 동작을 하는 구현부입니다.
      * Register는 Activity Lifecycle Stated 이전에 실행되어야 합니다.
+     * @param permission 권한을 입력해 주시면 됩니다. ex) Manifest.permission.READ_CONTACTS
      * @param onGranted 사용자가 권한 허가를 클릭하면 호출됩니다.
      * @param onDenied 사용자가 권한 거부를 클릭하면 호출됩니다.
      * */
-    fun registerForPermissionResult(
+    fun getPermission(
+        permission: String,
         onGranted: () -> Unit,
-        onDenied: () -> Unit
+        onDenied: () -> Unit,
     ) {
+        this.onGranted = onGranted
+        this.onDenied = onDenied
+        requestPermissionLauncher?.launch(permission)
+    }
+
+    private fun registerForPermissionResult() {
         requestPermissionLauncher = activity.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if(isGranted) onGranted()
+            if (isGranted) onGranted()
             else onDenied()
         }
     }
-
-    /**
-     * Lifecycle owner throw Exception
-     * */
-//    companion object {
-//        private var INSTANCE : PermissionManager? = null
-//        fun getInstance(activity: AppCompatActivity): PermissionManager {
-//            return synchronized(PermissionManager::class) {
-//                val newInstance = INSTANCE ?: PermissionManager(activity)
-//                INSTANCE = newInstance
-//                newInstance
-//            }
-//        }
-//    }
-
 }
 

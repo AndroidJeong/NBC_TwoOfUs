@@ -16,7 +16,7 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
     var itemClick: ItemClick? = null
 
     interface ItemClick {
-        fun onClick(view: View, position: Int)
+        fun onClick(contactInfo: ContactInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -65,7 +65,7 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
                 typeBaseHolder.bind(currentItem)
 
                 holder.itemView.setOnClickListener {
-                    itemClick?.onClick(it, position)
+                    itemClick?.onClick(contacts[position])
                 }
             }
 
@@ -74,7 +74,7 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
                 typeReverseHolder.bind(currentItem)
 
                 holder.itemView.setOnClickListener {
-                    itemClick?.onClick(it, position)
+                    itemClick?.onClick(contacts[position])
                 }
             }
         }

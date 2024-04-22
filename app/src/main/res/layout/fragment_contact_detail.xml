@@ -1,9 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ECECEC"
     tools:context=".presentation.contact_detail.ContactDetailFragment">
 
 
+    <View
+        android:id="@+id/detail_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_imageView"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/sample_danielle"
+        app:civ_border_color="@color/black"
+        app:civ_border_overlay="true"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/detail_name_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@null"
+        android:inputType="text"
+        android:text="이름"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_imageView" />
+
+    <EditText
+        android:id="@+id/detail_phonenum_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:inputType="phone"
+        android:text="010 1111 2222"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_name_edittext" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/btn_detail_likebutton"
+        android:scaleType="centerCrop"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/detail_view" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_call_imagebutton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/btn_detail_callbutton"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/detail_text_imagebutton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_edittext" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_text_imagebutton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/btn_detail_chatbutton"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/detail_email_imagebutton"
+        app:layout_constraintStart_toEndOf="@+id/detail_call_imagebutton"
+        app:layout_constraintTop_toTopOf="@+id/detail_call_imagebutton" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_email_imagebutton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/btn_detail_emailbutton"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_text_imagebutton"
+        app:layout_constraintTop_toTopOf="@+id/detail_text_imagebutton" />
+
+    <Button
+        android:id="@+id/detail_email_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="이메일"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/detail_delete_button"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_view" />
+
+    <Button
+        android:id="@+id/detail_memo_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="메모"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/detail_delete_button"
+        app:layout_constraintTop_toBottomOf="@+id/detail_email_button" />
+
+    <Button
+        android:id="@+id/detail_edit_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="편집"
+        android:textColor="@color/black"
+        android:backgroundTint="#D4D4D4"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_memo_button" />
+
+
+    <Button
+        android:id="@+id/detail_delete_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#D4D4D4"
+        android:text="삭제"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_edit_button"
+        app:layout_constraintWidth_percent="0.4" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--
+블랙 컬러 추가
+FragmentContainerView -> 연락처 페이지에서 추가해줘야하는지
+material 아이콘
+
+
+
+-->

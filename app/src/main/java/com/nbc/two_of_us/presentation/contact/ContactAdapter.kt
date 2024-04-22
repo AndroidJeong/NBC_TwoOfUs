@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.databinding.ItemListBinding
 import com.nbc.two_of_us.databinding.ItemListReverseBinding
@@ -86,7 +87,12 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
             binding.apply {
                 itemProfileCircleImageView.setImageURI(contactInfo.thumbnail)
                 itemNameTextView.text = contactInfo.name
-                //itemLikeImageView 처리
+
+                if (contactInfo.like) {
+                    itemLikeImageView.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    itemLikeImageView.setImageResource(R.drawable.ic_favorite_border)
+                }
             }
         }
     }
@@ -97,7 +103,12 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
             binding.apply {
                 itemProfileCircleImageViewReverse.setImageURI(contactInfo.thumbnail)
                 itemNameTextViewReverse.text = contactInfo.name
-                //itemLikeImageViewReverse 처리
+
+                if (contactInfo.like) {
+                    itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite_border)
+                }
             }
         }
     }

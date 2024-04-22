@@ -31,4 +31,9 @@ class ContactDetailFragment : Fragment() {
 
         super.onDestroyView()
     }
+
+    companion object {
+        // ContactListFragment에서 연락처 정보를 Bundle로 넘기기 위한 Key 값입니다.
+        const val BUNDLE_KEY_FOR_CONTACT_INFO = "BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
+    }
 }

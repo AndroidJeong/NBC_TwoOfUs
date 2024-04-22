@@ -35,7 +35,8 @@ class ContactViewPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
             thumbnail = Uri.parse("R.drawable.sample_danielle"),
             phone = "",
             email = "",
-            memo = ""
+            memo = "",
+            like = true
         )
     }
 }

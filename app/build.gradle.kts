@@ -45,6 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha08")
+    implementation("de.hdodenhof:circleimageview:2.2.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     testImplementation("junit:junit:4.13.2")

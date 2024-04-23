@@ -90,34 +90,23 @@ class ContactAdapter(private val contacts: MutableList<ContactInfo>) :
                 itemProfileCircleImageView.setImageURI(contactInfo.thumbnail)
                 itemNameTextView.text = contactInfo.name
 
-                updateListIcon(contactInfo.like)
+                if (contactInfo.like) {
+                    binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite_border)
+                }
 
                 itemLikeImageView.setOnClickListener {
-                    Log.d("어댑터임다", "좋아요 버튼 클릭 - 이전 like 상태 : ${contactInfo.like}")
-
-                    //좋아요 상태 반전
                     val updated = contactInfo.copy(like = !contactInfo.like)
-
-                    //데이터 업데이트
                     val isUpdated = ContactManager.update(updated)
 
                     if (isUpdated) {
-                        Log.d("어댑터임다", "좋아요 업데이트 성공")
                         contacts[adapterPosition] = updated
-                        notifyItemChanged(adapterPosition)
+                        notifyItemChanged(adapterPosition, updated)
                     } else {
-                        Log.d("어댑터임다", "좋아요 업데이트 실패")
+                        Log.d("ContactAdapter", "좋아요 업데이트 실패")
                     }
                 }
-            }
-        }
-
-        private fun updateListIcon(like: Boolean) {
-            Log.d("어댑터임다", "들어온 데이터는 ${like}")
-            if (like) {
-                binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite)
-            } else {
-                binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite_border)
             }
         }
     }
@@ -130,9 +119,21 @@ class ContactAdapter(private val contacts: MutableList<ContactInfo>) :
                 itemNameTextViewReverse.text = contactInfo.name
 
                 if (contactInfo.like) {
-                    itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite)
+                    binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite)
                 } else {
-                    itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite_border)
+                    binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite_border)
+                }
+
+                itemLikeImageViewReverse.setOnClickListener {
+                    val updated = contactInfo.copy(like = !contactInfo.like)
+                    val isUpdated = ContactManager.update(updated)
+
+                    if (isUpdated) {
+                        contacts[adapterPosition] = updated
+                        notifyItemChanged(adapterPosition, updated)
+                    } else {
+                        Log.d("ContactAdapter", "좋아요 업데이트 실패")
+                    }
                 }
             }
         }

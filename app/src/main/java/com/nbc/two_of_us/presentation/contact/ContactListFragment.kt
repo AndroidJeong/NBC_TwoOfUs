@@ -1,19 +1,27 @@
 package com.nbc.two_of_us.presentation.contact
 
+import android.Manifest
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Contacts
+import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
+import com.nbc.two_of_us.permission.ContactDatasource
+import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
-import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 
 
 class ContactListFragment : Fragment() {
@@ -22,28 +30,78 @@ class ContactListFragment : Fragment() {
     private val binding: FragmentContactListBinding
         get() = _binding!!
 
+    private val permissionManager by lazy {
+        PermissionManager(this)
+    }
+    private val contactDatasource by lazy {
+        ContactDatasource(requireContext())
+    }
+    private val adapter = ContactAdapter()
+
+    private val contactsPermissionDialog by lazy {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.contacts_permission_dialog_title))
+            .setMessage(getString(R.string.contacts_permission_dialog_message))
+            .setNegativeButton(getString(R.string.contacts_permission_dialog_negative)) { _: DialogInterface, _: Int ->
+            }
+            .setPositiveButton(getString(R.string.contacts_permission_dialog_positive)) { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:" + requireContext().packageName)
+                }
+                startActivity(intent)
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        getContactsInfo()
+    }
+
+    private fun getContactsInfo() {
+        permissionManager.getPermission(
+            Manifest.permission.READ_CONTACTS,
+            onGranted = {
+                changePermissionViewVisibility(View.GONE)
+                contactDatasource.getAllContacts {
+                    for (contactInfo in it) {
+                        ContactManager.add(contactInfo)
+                    }
+                    adapter.add(it)
+                }
+            },
+            onDenied = {
+                changePermissionViewVisibility(View.VISIBLE)
+                contactsPermissionDialog.show()
+            }
+        )
+    }
+
+    private fun changePermissionViewVisibility(visibility: Int) = with(binding) {
+        ivEmptyContact.visibility = visibility
+        btnRequestPermission.visibility = visibility
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        //데이터 생성
-        ContactManager.createDummy()
-
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         //recyclerView 그리기
-        val adapter = ContactAdapter(ContactManager.getAll().toMutableList())
-        binding.apply {
-            fragmentListListRecyclerView.adapter = adapter
-            fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        }
+        fragmentListListRecyclerView.adapter = adapter
+        fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        setListener()
+    }
+
+    private fun setListener() = with(binding) {
         //아이템 클릭 이벤트
         adapter.itemClick = object : ContactAdapter.ItemClick {
             override fun onClick(contactInfo : ContactInfo) {
@@ -54,21 +112,23 @@ class ContactListFragment : Fragment() {
 
                 val fragmentDetail = ContactDetailFragment()
                 fragmentDetail.arguments = bundle
-                Log.d("여기는 리스트프래그먼트", "${bundle}")
 
-//                parentFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment, fragmentDetail)
-//                    .addToBackStack(null)
-//                    .commit()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragmentDetail)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
         //FAB 클릭 이벤트
-        binding.fragmentListAddButtonFab.setOnClickListener {
-            Log.d("여기는 리스트프래그먼트", "FAB 버튼 이벤트 처리")
+        fragmentListAddButtonFab.setOnClickListener {
 
-            val fragmentAddDialog = AddContactDialogFragment()
+//            val fragmentAddDialog = AddContactDialogFragment()
 //            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
+        }
+
+        btnRequestPermission.setOnClickListener {
+            getContactsInfo()
         }
     }
 

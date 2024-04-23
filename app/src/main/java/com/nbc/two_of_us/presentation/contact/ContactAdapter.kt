@@ -11,12 +11,18 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.ItemListBinding
 import com.nbc.two_of_us.databinding.ItemListReverseBinding
 
-class ContactAdapter(private val contacts: MutableList<ContactInfo>) :
+class ContactAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val ITEM_TYPE_BASE = 1
     private val ITEM_TYPE_REVERSE = 2
     var itemClick: ItemClick? = null
+    private val contacts: MutableList<ContactInfo> = mutableListOf()
+
+    fun add(contacts: List<ContactInfo>) {
+        this.contacts.addAll(contacts)
+        notifyItemInserted(contacts.size)
+    }
 
     interface ItemClick {
         fun onClick(contactInfo: ContactInfo)

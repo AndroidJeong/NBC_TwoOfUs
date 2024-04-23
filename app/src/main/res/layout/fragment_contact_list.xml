@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container"
     tools:context=".presentation.contact.ContactListFragment">
 
     <LinearLayout
@@ -83,6 +84,29 @@
 
             </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
+            
+            <ImageView
+                android:id="@+id/iv_empty_contact"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty" />
+
+            <Button
+                android:id="@+id/btn_request_permission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_permission"
+                android:visibility="gone"
+                android:backgroundTint="@color/md_theme_dark_onPrimaryContainer"
+                app:layout_constraintTop_toBottomOf="@id/iv_empty_contact"
+                app:layout_constraintStart_toStartOf="@id/iv_empty_contact"
+                app:layout_constraintEnd_toEndOf="@id/iv_empty_contact"
+                android:layout_marginTop="16dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

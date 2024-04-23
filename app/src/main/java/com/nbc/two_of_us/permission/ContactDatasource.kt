@@ -25,7 +25,7 @@ class ContactDatasource(context: Context) {
     private val resolver = context.contentResolver
 
     /**
-     * 수정 중 ~
+     * 수정 중 ~~~
      * */
     fun addContact(contactInfo: ContactInfo) {
         contactInfoList.add(contactInfo)

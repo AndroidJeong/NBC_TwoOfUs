@@ -13,6 +13,8 @@ class ContactDatasource(context: Context) {
 
     val contactInfoList = mutableListOf<ContactInfo>()
 
+    init { getAllContacts() }
+
     private val phoneProjection = arrayOf(
         Phone.CONTACT_ID, Phone.DISPLAY_NAME, Phone.NUMBER,
         Phone.STARRED, Phone.PHOTO_URI
@@ -22,7 +24,14 @@ class ContactDatasource(context: Context) {
 
     private val resolver = context.contentResolver
 
-    fun getContact() {
+    /**
+     * 수정 중 ~
+     * */
+    fun addContact(contactInfo: ContactInfo) {
+        contactInfoList.add(contactInfo)
+    }
+
+    private fun getAllContacts() {
 
         thread(start = true) {
 

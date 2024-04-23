@@ -14,7 +14,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@null"
-        tools:src="@drawable/baseline_arrow_back_ios_24"
+        tools:src="@drawable/btn_detail_backbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,7 +112,7 @@
         app:layout_constraintStart_toEndOf="@+id/detail_text_imagebutton"
         app:layout_constraintTop_toTopOf="@+id/detail_text_imagebutton" />
 
-    <Button
+    <EditText
         android:id="@+id/detail_email_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -120,19 +120,21 @@
         tools:text="이메일"
         android:textAlignment="textStart"
         android:textColor="@color/black"
-        android:backgroundTint="#FFFFFF"
+        android:background="#FFFFFF"
+        android:maxLines="2"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_view" />
 
-    <Button
+    <EditText
         android:id="@+id/detail_memo_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:backgroundTint="#FFFFFF"
+        android:background="#FFFFFF"
         tools:text="메모"
+        android:maxLines="5"
         android:textAlignment="textStart"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"

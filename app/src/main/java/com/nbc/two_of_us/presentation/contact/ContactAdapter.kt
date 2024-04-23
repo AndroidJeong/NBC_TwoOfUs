@@ -15,9 +15,6 @@ import com.nbc.two_of_us.databinding.ItemListReverseBinding
 class ContactAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val ITEM_TYPE_BASE = 1
-    private val ITEM_TYPE_REVERSE = 2
-    private val ITEM_TYPE_GRID = 3
     lateinit var itemClick: ItemClick
     private val contacts: MutableList<ContactInfo> = mutableListOf()
 
@@ -32,7 +29,7 @@ class ContactAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_TYPE_BASE -> {
+            ViewType.BASE_LIST.viewType -> {
                 val binding =
                     ItemListBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -42,7 +39,7 @@ class ContactAdapter :
                 TypeBaseViewHolder(binding)
             }
 
-            ITEM_TYPE_REVERSE -> {
+            ViewType.REVERSE_LIST.viewType -> {
                 val binding =
                     ItemListReverseBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -52,7 +49,7 @@ class ContactAdapter :
                 TypeReverseViewHolder(binding)
             }
 
-            ITEM_TYPE_GRID -> {
+            ViewType.GRID_LIST.viewType -> {
                 val binding =
                     ItemListGridBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -70,18 +67,23 @@ class ContactAdapter :
     override fun getItemCount(): Int = contacts.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (position % 2 == 0) {
-            ITEM_TYPE_BASE
+        return if (currentLayoutType == LayoutType.LIST) {
+            if (position % 2 == 0) {
+                ViewType.BASE_LIST.viewType
+            } else {
+                ViewType.REVERSE_LIST.viewType
+            }
         } else {
-            ITEM_TYPE_REVERSE
+            ViewType.GRID_LIST.viewType
         }
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = contacts[position]
 
         when (holder.itemViewType) {
-            ITEM_TYPE_BASE -> {
+            ViewType.BASE_LIST.viewType -> {
                 val typeBaseHolder = holder as TypeBaseViewHolder
                 typeBaseHolder.bind(currentItem)
 
@@ -91,7 +93,7 @@ class ContactAdapter :
 
             }
 
-            ITEM_TYPE_REVERSE -> {
+            ViewType.REVERSE_LIST.viewType -> {
                 val typeReverseHolder = holder as TypeReverseViewHolder
                 typeReverseHolder.bind(currentItem)
 
@@ -100,7 +102,7 @@ class ContactAdapter :
                 }
             }
 
-            ITEM_TYPE_GRID -> {
+            ViewType.GRID_LIST.viewType -> {
                 val typeGridHolder = holder as TypeGridViewHolder
                 typeGridHolder.bind(currentItem)
 

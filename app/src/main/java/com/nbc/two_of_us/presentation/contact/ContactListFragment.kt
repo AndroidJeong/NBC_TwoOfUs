@@ -143,6 +143,8 @@ class ContactListFragment : Fragment() {
                     R.id.linear -> {
                         Log.d("여기는 리스트프래그먼트", "리스트 누름")
 
+                        setLayoutType(LayoutType.LIST)
+
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         }
@@ -151,6 +153,8 @@ class ContactListFragment : Fragment() {
                     }
                     R.id.grid -> {
                         Log.d("여기는 리스트프래그먼트", "그리드 누름")
+
+                        setLayoutType(LayoutType.GRID)
 
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 4)

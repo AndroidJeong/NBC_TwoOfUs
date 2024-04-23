@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
@@ -60,6 +63,9 @@ class ContactListFragment : Fragment() {
 //                    .replace(R.id.fragment, fragmentDetail)
 //                    .addToBackStack(null)
 //                    .commit()
+
+                //detail로 가도 살아있음.. resume 상태로...
+                //옵저버 패턴.. 이벤트 버스
             }
         }
 
@@ -69,6 +75,39 @@ class ContactListFragment : Fragment() {
 
             val fragmentAddDialog = AddContactDialogFragment()
 //            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
+        }
+
+        //헤더 메뉴 클릭 이벤트
+        binding.fragmentListMenuImageView.setOnClickListener {
+            Log.d("여기는 리스트프래그먼트", "헤더 메뉴 눌림")
+
+            var pop = PopupMenu(requireContext(), view)
+            pop.menuInflater.inflate(R.drawable.popup_menu, pop.menu)
+            pop.show()
+
+            pop.setOnMenuItemClickListener { item: MenuItem ->
+                when (item.itemId) {
+                    R.id.linear -> {
+                        Log.d("여기는 리스트프래그먼트", "리스트 누름")
+
+                        binding.apply {
+                            fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        }
+
+                        true
+                    }
+                    R.id.grid -> {
+                        Log.d("여기는 리스트프래그먼트", "그리드 누름")
+
+                        binding.apply {
+                            fragmentListListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
+                        }
+
+                        true
+                    }
+                    else -> false
+                }
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.ItemListBinding
+import com.nbc.two_of_us.databinding.ItemListGridBinding
 import com.nbc.two_of_us.databinding.ItemListReverseBinding
 
 class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
@@ -16,6 +17,7 @@ class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
 
     private val ITEM_TYPE_BASE = 1
     private val ITEM_TYPE_REVERSE = 2
+    private val ITEM_TYPE_GRID = 3
     lateinit var itemClick: ItemClick
 
     interface ItemClick {
@@ -44,6 +46,16 @@ class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
                 TypeReverseViewHolder(binding)
             }
 
+            ITEM_TYPE_GRID -> {
+                val binding =
+                    ItemListGridBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                TypeGridViewHolder(binding)
+            }
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
@@ -68,7 +80,7 @@ class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
                 typeBaseHolder.bind(currentItem)
 
                 holder.itemView.setOnClickListener {
-                    itemClick?.onClick(contacts[position])
+                    itemClick.onClick(contacts[position])
                 }
 
             }
@@ -78,7 +90,16 @@ class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
                 typeReverseHolder.bind(currentItem)
 
                 holder.itemView.setOnClickListener {
-                    itemClick?.onClick(contacts[position])
+                    itemClick.onClick(contacts[position])
+                }
+            }
+
+            ITEM_TYPE_GRID -> {
+                val typeGridHolder = holder as TypeGridViewHolder
+                typeGridHolder.bind(currentItem)
+
+                holder.itemView.setOnClickListener {
+                    itemClick.onClick(contacts[position])
                 }
             }
         }
@@ -125,6 +146,34 @@ class ContactAdapter(private var contacts: MutableList<ContactInfo>) :
                 }
 
                 itemLikeImageViewReverse.setOnClickListener {
+                    val updated = contactInfo.copy(like = !contactInfo.like)
+                    val isUpdated = ContactManager.update(updated)
+
+                    if (isUpdated) {
+                        contacts[adapterPosition] = updated
+                        notifyItemChanged(adapterPosition, updated)
+                    } else {
+                        Log.d("ContactAdapter", "좋아요 업데이트 실패")
+                    }
+                }
+            }
+        }
+    }
+
+    inner class TypeGridViewHolder(private val binding: ItemListGridBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(contactInfo: ContactInfo) {
+            binding.apply {
+                itemProfileCircleImageViewGrid.setImageURI(contactInfo.thumbnail)
+                itemNameTextViewGrid.text = contactInfo.name
+
+                if (contactInfo.like) {
+                    binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite_border)
+                }
+
+                itemLikeImageViewGrid.setOnClickListener {
                     val updated = contactInfo.copy(like = !contactInfo.like)
                     val isUpdated = ContactManager.update(updated)
 

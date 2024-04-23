@@ -52,29 +52,26 @@ class AddContactDialogFragment : DialogFragment() {
     private fun Save(){
         val name = binding.editTextName.text.toString()
         val num = binding.editTextPhonenumber.text.toString()
-        val address = binding.editTextEmail.text.toString()
+        var address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (name.isNullOrEmpty()){
-            Toast.makeText(requireContext(),"이름을 입력해주세요", Toast.LENGTH_SHORT).show()
-        } else if(num.isEmpty()){
-            Toast.makeText(requireContext(), "전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-        } else if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
-            Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
-        } else {
-            selectedImageUri?.let { uri ->
-                val newContact = ContactInfo(1, name, uri, num, address, "",false)
-                val isAdded = add(newContact)
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "연락처가 성공적으로 추가되었습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "이미 존재하는 연락처입니다.", Toast.LENGTH_SHORT).show()
+        if (name.isNotEmpty() && num.isNotEmpty()) {
+            val newContact = if (selectedImageUri != null) {
+                selectedImageUri?.let { uri ->
+                    ContactInfo(1, name, uri, num, address, "", false)
                 }
-
-                dismiss()
+            } else {
+                if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
+                    Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
+                    null
+                } else {
+                    ContactInfo(1, name, Uri.EMPTY, num, address, "", false)
+                }
             }
+            newContact?.let { add(it) }
 
+        } else {
+            Toast.makeText(requireContext(), "이름과 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
         }
 
     }

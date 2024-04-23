@@ -109,7 +109,6 @@ class ContactListFragment : Fragment() {
         //아이템 클릭 이벤트
         adapter.itemClick = object : ContactAdapter.ItemClick {
             override fun onClick(contactInfo : ContactInfo) {
-                //데이터를 번들로 넘겨줌
                 val bundle = Bundle().apply {
                     putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO, contactInfo)
                 }
@@ -132,41 +131,30 @@ class ContactListFragment : Fragment() {
 
         //헤더 메뉴 클릭 이벤트
         binding.fragmentListMenuImageView.setOnClickListener {
-            Log.d("여기는 리스트프래그먼트", "헤더 메뉴 눌림")
-
-            var pop = android.widget.PopupMenu(requireContext(), view)
+            val pop = android.widget.PopupMenu(requireContext(), fragmentListMenuImageView)
             pop.menuInflater.inflate(R.drawable.popup_menu, pop.menu)
             pop.show()
 
             pop.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.itemId) {
                     R.id.linear -> {
-                        Log.d("여기는 리스트프래그먼트", "리스트 누름")
-
                         setLayoutType(LayoutType.LIST)
-
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         }
-
                         true
                     }
                     R.id.grid -> {
-                        Log.d("여기는 리스트프래그먼트", "그리드 누름")
-
                         setLayoutType(LayoutType.GRID)
-
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
                         }
-
                         true
                     }
                     else -> false
                 }
             }
         }
-
         btnRequestPermission.setOnClickListener {
             getContactsInfo()
         }

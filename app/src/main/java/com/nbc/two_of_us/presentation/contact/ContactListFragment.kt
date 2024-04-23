@@ -38,7 +38,7 @@ class ContactListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //recyclerView 그리기
-        val adapter = ContactAdapter(ContactManager.getAll())
+        val adapter = ContactAdapter(ContactManager.getAll().toMutableList())
         binding.apply {
             fragmentListListRecyclerView.adapter = adapter
             fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -70,7 +70,6 @@ class ContactListFragment : Fragment() {
             val fragmentAddDialog = AddContactDialogFragment()
 //            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
         }
-
     }
 
     override fun onDestroyView() {

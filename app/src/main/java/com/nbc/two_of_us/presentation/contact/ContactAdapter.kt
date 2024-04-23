@@ -1,15 +1,17 @@
 package com.nbc.two_of_us.presentation.contact
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
+import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.ItemListBinding
 import com.nbc.two_of_us.databinding.ItemListReverseBinding
 
-class ContactAdapter(private val contacts: List<ContactInfo>) :
+class ContactAdapter(private val contacts: MutableList<ContactInfo>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val ITEM_TYPE_BASE = 1
@@ -68,6 +70,7 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
                 holder.itemView.setOnClickListener {
                     itemClick?.onClick(contacts[position])
                 }
+
             }
 
             ITEM_TYPE_REVERSE -> {
@@ -81,23 +84,45 @@ class ContactAdapter(private val contacts: List<ContactInfo>) :
         }
     }
 
-    class TypeBaseViewHolder(private val binding: ItemListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class TypeBaseViewHolder(private val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(contactInfo: ContactInfo) {
             binding.apply {
                 itemProfileCircleImageView.setImageURI(contactInfo.thumbnail)
                 itemNameTextView.text = contactInfo.name
 
-                if (contactInfo.like) {
-                    itemLikeImageView.setImageResource(R.drawable.ic_favorite)
-                } else {
-                    itemLikeImageView.setImageResource(R.drawable.ic_favorite_border)
+                updateListIcon(contactInfo.like)
+
+                itemLikeImageView.setOnClickListener {
+                    Log.d("어댑터임다", "좋아요 버튼 클릭 - 이전 like 상태 : ${contactInfo.like}")
+
+                    //좋아요 상태 반전
+                    val updated = contactInfo.copy(like = !contactInfo.like)
+
+                    //데이터 업데이트
+                    val isUpdated = ContactManager.update(updated)
+
+                    if (isUpdated) {
+                        Log.d("어댑터임다", "좋아요 업데이트 성공")
+                        contacts[adapterPosition] = updated
+                        notifyItemChanged(adapterPosition)
+                    } else {
+                        Log.d("어댑터임다", "좋아요 업데이트 실패")
+                    }
                 }
+            }
+        }
+
+        private fun updateListIcon(like: Boolean) {
+            Log.d("어댑터임다", "들어온 데이터는 ${like}")
+            if (like) {
+                binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.itemLikeImageView.setImageResource(R.drawable.ic_favorite_border)
             }
         }
     }
 
-    class TypeReverseViewHolder(private val binding: ItemListReverseBinding) :
+    inner class TypeReverseViewHolder(private val binding: ItemListReverseBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(contactInfo: ContactInfo) {
             binding.apply {

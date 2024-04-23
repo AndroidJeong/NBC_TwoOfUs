@@ -26,13 +26,14 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/detail_like_likebutton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="#FFFFFF"
                     android:scaleType="centerCrop"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
+                    android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="parent"
@@ -46,6 +47,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#FFFFFF"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:src="@drawable/btn_detail_backbutton" />
@@ -201,6 +203,7 @@
                     android:layout_marginTop="10dp"
                     android:backgroundTint="#D4D4D4"
                     android:textColor="@color/black"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_edit_button"
@@ -208,34 +211,9 @@
                     tools:text="삭제" />
 
 
-
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
              </androidx.core.widget.NestedScrollView>
 
 
-
-
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-    <!--
-
-        <View
-            android:id="@+id/detail_view"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="100dp"
-            android:background="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    -->

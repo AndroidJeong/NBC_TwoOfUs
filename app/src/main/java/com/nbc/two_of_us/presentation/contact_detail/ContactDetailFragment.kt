@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
+import com.nbc.two_of_us.util.ObserverOwner
 
 class ContactDetailFragment : Fragment() {
 
@@ -24,6 +26,11 @@ class ContactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val someRandomContactInfo = ContactManager.getAll().random()
+        val updatedInfo = someRandomContactInfo.copy(like = someRandomContactInfo.like.not())
+
+        ContactManager.update(updatedInfo)
+        ObserverOwner.notifyUpdate(updatedInfo)
     }
 
     override fun onDestroyView() {

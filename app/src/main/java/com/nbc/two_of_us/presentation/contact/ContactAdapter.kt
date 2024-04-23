@@ -24,6 +24,12 @@ class ContactAdapter :
         notifyItemInserted(contacts.size)
     }
 
+    fun update(contactInfo: ContactInfo) {
+        val index = this.contacts.indexOfFirst { it.rawContactId == contactInfo.rawContactId }
+        contacts[index] = contactInfo
+        notifyItemChanged(index)
+    }
+
     interface ItemClick {
         fun onClick(contactInfo: ContactInfo)
     }

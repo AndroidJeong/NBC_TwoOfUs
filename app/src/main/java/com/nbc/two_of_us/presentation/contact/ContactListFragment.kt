@@ -22,9 +22,11 @@ import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
+import com.nbc.two_of_us.util.Observer
+import com.nbc.two_of_us.util.ObserverOwner
 
 
-class ContactListFragment : Fragment() {
+class ContactListFragment : Fragment(), Observer {
 
     private var _binding: FragmentContactListBinding? = null
     private val binding: FragmentContactListBinding
@@ -56,6 +58,7 @@ class ContactListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         getContactsInfo()
+        ObserverOwner.register(this)
     }
 
     private fun getContactsInfo() {
@@ -136,5 +139,14 @@ class ContactListFragment : Fragment() {
         _binding = null
 
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        ObserverOwner.unRegister(this)
+        super.onDestroy()
+    }
+
+    override fun update(contactInfo: ContactInfo) {
+        adapter.update(contactInfo)
     }
 }

@@ -17,4 +17,5 @@ data class ContactInfo(
     val phone: String, // 전화번호
     val email: String, // 이메일
     val memo: String, // 메모
+    val like: Boolean
 ): Parcelable

@@ -64,6 +64,7 @@ object ContactManager {
                 "010-5678-0001",
                 "danielle@newjeans.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_5678_0002,
@@ -72,6 +73,7 @@ object ContactManager {
                 "010-5678-0002",
                 "hanni@newjeans.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_5678_0003,
@@ -80,6 +82,7 @@ object ContactManager {
                 "010-5678-0003",
                 "hyein@newjeans.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_5678_0004,
@@ -88,6 +91,7 @@ object ContactManager {
                 "010-5678-0004",
                 "minji@newjeans.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_1234_0001,
@@ -96,6 +100,7 @@ object ContactManager {
                 "010-1234-0001",
                 "jin@bts.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_1234_0002,
@@ -104,6 +109,7 @@ object ContactManager {
                 "010-1234-0002",
                 "rm@bts.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_1234_0003,
@@ -112,6 +118,7 @@ object ContactManager {
                 "010-1234-0003",
                 "sugar@bts.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_1234_0004,
@@ -120,6 +127,7 @@ object ContactManager {
                 "010-1234-0004",
                 "sugar@bts.com",
                 "",
+                false,
             ),
             ContactInfo(
                 1_1234_0005,
@@ -128,6 +136,7 @@ object ContactManager {
                 "010-1234-0005",
                 "v@bts.com",
                 "",
+                false,
             ),
         )
         for (contact in dummy) {

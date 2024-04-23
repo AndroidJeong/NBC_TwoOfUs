@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,169 +7,235 @@
     android:background="#ECECEC"
     tools:context=".presentation.contact_detail.ContactDetailFragment">
 
-    <ImageButton
-        android:id="@+id/detail_back_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@null"
-        tools:src="@drawable/btn_detail_backbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <View
-        android:id="@+id/detail_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="100dp"
-        android:background="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/detail_imageView"
-        android:layout_width="150dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="50dp"
-        tools:src="@drawable/sample_danielle"
-        app:civ_border_color="@color/black"
-        app:civ_border_overlay="true"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/detail_name_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@null"
-        android:inputType="text"
-        tools:text="이름"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_imageView" />
-
-    <TextView
-        android:id="@+id/detail_phonenum_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@null"
-        android:inputType="phone"
-        tools:text="010 1111 2222"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_name_edittext" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        tools:src="@drawable/btn_detail_likebutton"
-        android:scaleType="centerCrop"
-        android:background="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/detail_view" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/detail_call_imagebutton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="15dp"
-        tools:src="@drawable/btn_detail_callbutton"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/detail_text_imagebutton"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_edittext" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/detail_text_imagebutton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        tools:src="@drawable/btn_detail_chatbutton"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/detail_email_imagebutton"
-        app:layout_constraintStart_toEndOf="@+id/detail_call_imagebutton"
-        app:layout_constraintTop_toTopOf="@+id/detail_call_imagebutton" />
-
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/detail_email_imagebutton"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        tools:src="@drawable/btn_detail_emailbutton"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/detail_text_imagebutton"
-        app:layout_constraintTop_toTopOf="@+id/detail_text_imagebutton" />
-
-    <EditText
-        android:id="@+id/detail_email_button"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        tools:text="이메일"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:background="#FFFFFF"
-        android:maxLines="2"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_view" />
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <EditText
-        android:id="@+id/detail_memo_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
-        tools:text="메모"
-        android:maxLines="5"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_email_button" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/example"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <Button
-        android:id="@+id/detail_edit_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        tools:text="편집"
-        android:textColor="@color/black"
-        android:backgroundTint="#D4D4D4"
-        app:layout_constraintWidth_percent="0.4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_memo_button" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="#FFFFFF"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    tools:src="@drawable/btn_detail_likebutton" />
 
 
-    <Button
-        android:id="@+id/detail_delete_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#D4D4D4"
-        tools:text="삭제"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_edit_button"
-        app:layout_constraintWidth_percent="0.4" />
+                <ImageButton
+                    android:id="@+id/detail_back_backbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#FFFFFF"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/btn_detail_backbutton" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/detail_imageView"
+                android:layout_width="150dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="50dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_overlay="true"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/sample_danielle" />
+
+            <TextView
+                android:id="@+id/detail_name_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@null"
+                android:inputType="text"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_imageView"
+                tools:text="이름" />
+
+            <TextView
+                android:id="@+id/detail_phonenum_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_name_edittext"
+                tools:text="010 1111 2222" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/detail_call_imagebutton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="15dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toStartOf="@+id/detail_text_imagebutton"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_edittext"
+                tools:src="@drawable/btn_detail_callbutton" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/detail_text_imagebutton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toStartOf="@+id/detail_email_imagebutton"
+                app:layout_constraintStart_toEndOf="@+id/detail_call_imagebutton"
+                app:layout_constraintTop_toTopOf="@+id/detail_call_imagebutton"
+                tools:src="@drawable/btn_detail_chatbutton" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/detail_email_imagebutton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/detail_text_imagebutton"
+                app:layout_constraintTop_toTopOf="@+id/detail_text_imagebutton"
+                tools:src="@drawable/btn_detail_emailbutton" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/app_name" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+   <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/detail_email_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="#FFFFFF"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="이메일" />
+
+                <TextView
+                    android:id="@+id/detail_memo_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#FFFFFF"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_email_button"
+                    tools:text="메모" />
+
+                <Button
+                    android:id="@+id/detail_edit_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="#D4D4D4"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_memo_button"
+                    app:layout_constraintWidth_percent="0.4"
+                    tools:text="편집" />
+
+
+                <Button
+                    android:id="@+id/detail_delete_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#D4D4D4"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_edit_button"
+                    app:layout_constraintWidth_percent="0.4"
+                    tools:text="삭제" />
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+             </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <!--
+
+        <View
+            android:id="@+id/detail_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="100dp"
+            android:background="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    -->

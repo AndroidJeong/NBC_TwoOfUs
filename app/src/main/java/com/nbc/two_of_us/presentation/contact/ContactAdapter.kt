@@ -25,6 +25,9 @@ class ContactAdapter :
 
     fun update(contactInfo: ContactInfo) {
         val index = this.contacts.indexOfFirst { it.rawContactId == contactInfo.rawContactId }
+        if (index == -1) {
+            return
+        }
         contacts[index] = contactInfo
         notifyItemChanged(index)
     }
@@ -95,7 +98,6 @@ class ContactAdapter :
                 holder.itemView.setOnClickListener {
                     itemClick.onClick(contacts[position])
                 }
-
             }
 
             ViewType.REVERSE_LIST.viewType -> {

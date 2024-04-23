@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Contacts
 import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,9 +12,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
@@ -23,17 +22,18 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
 import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
+import com.nbc.two_of_us.presentation.ContactViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
-import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
-import com.nbc.two_of_us.util.Observer
 import com.nbc.two_of_us.util.Owner
 
-class ContactListFragment : Fragment(), Observer {
+class ContactListFragment : Fragment() {
 
     private var _binding: FragmentContactListBinding? = null
     private val binding: FragmentContactListBinding
         get() = _binding!!
+
+    private lateinit var contactViewModel: ContactViewModel
 
     private val permissionManager by lazy {
         PermissionManager(this)
@@ -59,13 +59,7 @@ class ContactListFragment : Fragment(), Observer {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d("listFragment", "onCreate 실행")
-        //오너 등록
-        //디테일에서 클릭하면 바뀌었다고 오너에게 알려주고
         getContactsInfo()
-
-        Owner.register(this)
     }
 
     private fun getContactsInfo() {
@@ -104,11 +98,18 @@ class ContactListFragment : Fragment(), Observer {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        //recyclerView 그리기
+        contactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
+
+        contactViewModel.loadContactInfo()
+
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setListener()
+
+        Owner.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.update(contactInfo)
+        }
     }
 
     private fun setListener() = with(binding) {
@@ -171,10 +172,5 @@ class ContactListFragment : Fragment(), Observer {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-        Owner.unRegister(this)
-    }
-
-    override fun updateData(contactInfo: ContactInfo) {
-        adapter.update(contactInfo)
     }
 }

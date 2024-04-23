@@ -1,21 +1,8 @@
 package com.nbc.two_of_us.util
 
+import androidx.lifecycle.MutableLiveData
 import com.nbc.two_of_us.data.ContactInfo
 
 object Owner {
-    val observerList = mutableListOf<Observer>()
-
-    fun register(observer: Observer) {
-        observerList.add(observer)
-    }
-
-    fun notifyUpdate(contactInfo: ContactInfo) {
-        for (observer in observerList) {
-            observer.updateData(contactInfo)
-        }
-    }
-
-    fun unRegister(observer: Observer) {
-        observerList.remove(observer)
-    }
+    val contactLiveData = MutableLiveData<ContactInfo>()
 }

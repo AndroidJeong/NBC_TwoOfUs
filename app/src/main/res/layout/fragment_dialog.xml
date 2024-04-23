@@ -78,29 +78,26 @@
             android:id="@+id/btn_save"
             android:layout_width="150dp"
             android:layout_height="42dp"
-            android:layout_marginTop="368dp"
-            android:backgroundTint="#f6f6f6"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/md_theme_light_primary"
             android:text="저장"
             android:textColor="#000000"
-            app:cornerRadius="0dp"
+            app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="150dp"
             android:layout_height="42dp"
-            android:backgroundTint="#f6f6f6"
+            android:backgroundTint="@color/md_theme_light_primary"
             android:text="취소"
             android:textColor="#000000"
-            app:cornerRadius="0dp"
+            app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_save"
             app:layout_constraintEnd_toStartOf="@+id/btn_save"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_save"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/btn_save" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

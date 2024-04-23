@@ -26,9 +26,10 @@ import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
+import com.nbc.two_of_us.util.Observer
+import com.nbc.two_of_us.util.Owner
 
-
-class ContactListFragment : Fragment() {
+class ContactListFragment : Fragment(), Observer {
 
     private var _binding: FragmentContactListBinding? = null
     private val binding: FragmentContactListBinding
@@ -59,7 +60,12 @@ class ContactListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d("listFragment", "onCreate 실행")
+        //오너 등록
+        //디테일에서 클릭하면 바뀌었다고 오너에게 알려주고
         getContactsInfo()
+
+        Owner.register(this)
     }
 
     private fun getContactsInfo() {
@@ -155,6 +161,8 @@ class ContactListFragment : Fragment() {
                 }
             }
         }
+
+        //권한 승인 버튼 이벤트
         btnRequestPermission.setOnClickListener {
             getContactsInfo()
         }
@@ -162,7 +170,11 @@ class ContactListFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-
         super.onDestroyView()
+        Owner.unRegister(this)
+    }
+
+    override fun updateData(contactInfo: ContactInfo) {
+        adapter.update(contactInfo)
     }
 }

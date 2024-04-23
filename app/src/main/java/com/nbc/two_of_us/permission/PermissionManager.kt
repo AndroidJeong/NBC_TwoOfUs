@@ -2,14 +2,14 @@ package com.nbc.two_of_us.permission
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 /**
  * 권한 요청을 처리하는 클래스 입니다.
  * 권한 요청을 위해 context 등이 필요한 경우 클래스를 수정해주세요.
  */
 class PermissionManager(
-    private val activity: AppCompatActivity,
+    private val fragment: Fragment,
 ){
     init { registerForPermissionResult() }
 
@@ -35,7 +35,7 @@ class PermissionManager(
     }
 
     private fun registerForPermissionResult() {
-        requestPermissionLauncher = activity.registerForActivityResult(
+        requestPermissionLauncher = fragment.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) onGranted()

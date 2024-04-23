@@ -1,5 +1,6 @@
 package com.nbc.two_of_us.presentation.contact
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,10 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
+import com.nbc.two_of_us.permission.ContactDatasource
+import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
@@ -22,6 +24,13 @@ class ContactListFragment : Fragment() {
     private val binding: FragmentContactListBinding
         get() = _binding!!
 
+    private val permissionManager by lazy {
+        PermissionManager(this)
+    }
+    private val contactDatasource by lazy {
+        ContactDatasource(requireContext())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,15 +38,27 @@ class ContactListFragment : Fragment() {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         //데이터 생성
-        ContactManager.createDummy()
+        permissionManager.getPermission(
+            Manifest.permission.READ_CONTACTS,
+            onGranted = {
+                contactDatasource.contactInfoList.forEach {
+                    ContactManager.add(it)
+                }
+            },
+            onDenied = {
+            }
+        )
 
         return binding.root
     }
 
+    val TAG = ContactListFragment::class.java.simpleName
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //recyclerView 그리기
+        Log.d(TAG, "onViewCreated is called")
+
         val adapter = ContactAdapter(ContactManager.getAll().toMutableList())
         binding.apply {
             fragmentListListRecyclerView.adapter = adapter

@@ -67,7 +67,7 @@
                 tools:src="@drawable/sample_danielle" />
 
             <TextView
-                android:id="@+id/detail_name_edittext"
+                android:id="@+id/detail_name_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -80,7 +80,7 @@
                 tools:text="이름" />
 
             <TextView
-                android:id="@+id/detail_phonenum_edittext"
+                android:id="@+id/detail_phonenum_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -89,7 +89,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_name_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/detail_name_textview"
                 tools:text="010 1111 2222" />
 
 
@@ -103,7 +103,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/detail_text_imagebutton"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_textview"
                 tools:src="@drawable/btn_detail_callbutton" />
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -156,7 +156,7 @@
 
 
                 <TextView
-                    android:id="@+id/detail_email_button"
+                    android:id="@+id/detail_email_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
@@ -170,7 +170,7 @@
                     tools:text="이메일" />
 
                 <TextView
-                    android:id="@+id/detail_memo_button"
+                    android:id="@+id/detail_memo_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -179,7 +179,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_email_button"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_email_textview"
                     tools:text="메모" />
 
                 <Button
@@ -191,7 +191,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_memo_button"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_memo_textview"
                     app:layout_constraintWidth_percent="0.4"
                     tools:text="편집" />
 

@@ -18,12 +18,6 @@ class ViewPagerFragment : Fragment() {
 
     private lateinit var adapter: ContactViewPagerAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        adapter = ContactViewPagerAdapter(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +34,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     private fun setViewPager() = with(binding) {
+        adapter = ContactViewPagerAdapter(this@ViewPagerFragment)
         vp.adapter = adapter
     }
 

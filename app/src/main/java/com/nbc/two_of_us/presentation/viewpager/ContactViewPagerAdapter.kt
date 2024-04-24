@@ -3,7 +3,6 @@ package com.nbc.two_of_us.presentation.viewpager
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.presentation.contact.ContactListFragment

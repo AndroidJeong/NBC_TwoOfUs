@@ -6,13 +6,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -104,9 +102,8 @@ class ContactListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         contactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
-        contactViewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
-            adapter.updateList(contactList)
-        }
+
+        contactViewModel.loadContactInfo()
 
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -125,8 +122,9 @@ class ContactListFragment : Fragment() {
                 val fragmentDetail = ContactDetailFragment()
                 fragmentDetail.arguments = bundle
 
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, fragmentDetail)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_view, fragmentDetail)
+                    .setReorderingAllowed(true)
                     .addToBackStack(null)
                     .commit()
             }

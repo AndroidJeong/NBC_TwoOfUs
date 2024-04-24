@@ -1,7 +1,6 @@
 package com.nbc.two_of_us.presentation.dialog
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,13 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.nbc.two_of_us.R
+import androidx.lifecycle.ViewModelProvider
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
-import com.nbc.two_of_us.data.ContactManager.getAll
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
-import java.net.URI
+import com.nbc.two_of_us.presentation.ContactViewModel
+import com.nbc.two_of_us.util.Owner
 
 class AddContactDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
@@ -66,24 +65,23 @@ class AddContactDialogFragment : DialogFragment() {
         if (name.isNotEmpty() && num.isNotEmpty()) {
             val newContact = if (selectedImageUri != null) {
                 selectedImageUri?.let { uri ->
-                    ContactInfo(1, name, uri, num, address, "", false)
+                    ContactInfo(ContactManager.getAll().size + 1, name, uri, num, address, "", false)
                 }
             } else {
                 if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
                     Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
                     null
                 } else {
-                    ContactInfo(1, name, Uri.EMPTY, num, address, "", false)
+                    ContactInfo(ContactManager.getAll().size + 1, name, Uri.EMPTY, num, address, "", false)
                 }
             }
 
-            Log.d("dialog", "입력된 값 : ${newContact}")
-
             newContact?.let { contact ->
-                Log.d("dialog", "let에 들어온 값 : ${newContact}")
                 val isAdded = add(contact)
                 if (isAdded) {
-                    Log.d("dialog", "연락처 데이터에 추가 완료")
+                    val viewModel: ContactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
+                    viewModel.addContactInfo(ContactManager.getAll())
+
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
                     val contactInfo = Bundle().apply {
                         putParcelable("contactInfo", contact)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,7 @@ import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
-import com.nbc.two_of_us.presentation.ContactViewModel
-import com.nbc.two_of_us.util.Owner
+import com.nbc.two_of_us.presentation.ObservingManager
 
 class AddContactDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
@@ -79,10 +77,13 @@ class AddContactDialogFragment : DialogFragment() {
             newContact?.let { contact ->
                 val isAdded = add(contact)
                 if (isAdded) {
-                    val viewModel: ContactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
-                    viewModel.addContactInfo(ContactManager.getAll())
+                    ObservingManager.addContactInfo(ContactManager.getAll())
 
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
+                    val contactInfo = Bundle().apply {
+                        putParcelable("contactInfo", contact)
+                    }
+                    parentFragmentManager.setFragmentResult("Contact", contactInfo)
                     dismiss()
                 } else {
                     Toast.makeText(requireContext(), "이미 있는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT).show()

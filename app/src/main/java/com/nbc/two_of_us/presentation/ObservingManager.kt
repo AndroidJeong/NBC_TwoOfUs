@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nbc.two_of_us.data.ContactInfo
 
-class ContactViewModel : ViewModel() {
+object ObservingManager {
 
     private val _contactInfoLiveData = MutableLiveData<List<ContactInfo>>()
     val contactInfoLiveData : MutableLiveData<List<ContactInfo>>

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -103,8 +104,9 @@ class ContactListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         contactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
-
-        contactViewModel.loadContactInfo()
+        contactViewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
+            adapter.updateList(contactList)
+        }
 
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -115,7 +117,7 @@ class ContactListFragment : Fragment() {
     private fun setListener() = with(binding) {
         //아이템 클릭 이벤트
         adapter.itemClick = object : ContactAdapter.ItemClick {
-            override fun onClick(contactInfo : ContactInfo) {
+            override fun onClick(contactInfo: ContactInfo) {
                 val bundle = Bundle().apply {
                     putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO, contactInfo)
                 }

@@ -83,10 +83,6 @@ class AddContactDialogFragment : DialogFragment() {
                     viewModel.addContactInfo(ContactManager.getAll())
 
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
-                    val contactInfo = Bundle().apply {
-                        putParcelable("contactInfo", contact)
-                    }
-                    parentFragmentManager.setFragmentResult("Contact", contactInfo)
                     dismiss()
                 } else {
                     Toast.makeText(requireContext(), "이미 있는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT).show()

@@ -40,7 +40,7 @@ class ContactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //visible 설정, 번들데이터 받아오기
+
         /**
          * @author 경우님
          * */
@@ -53,7 +53,7 @@ class ContactDetailFragment : Fragment() {
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
 
-        if (detailInfo?.rawContactId == null) {
+        if (detailInfo?.rawContactId == 0) {
             binding.detailLikeLikebutton.visibility = View.GONE
             binding.detailBackBackbutton.visibility = View.GONE
             binding.detailDeleteButton.visibility = View.GONE
@@ -68,13 +68,6 @@ class ContactDetailFragment : Fragment() {
 
         //프레그먼트 종료코드?
         binding.detailBackBackbutton.setOnClickListener {
-            /**
-             * Error occur
-             *      : Nav Graph
-             *
-             * */
-            Log.e("TAG", "onViewCreated: button clicked!")
-            requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
             requireActivity().supportFragmentManager.popBackStack()
         }
 
@@ -102,7 +95,6 @@ class ContactDetailFragment : Fragment() {
 
         likeButton.setOnClickListener {
 
-            //하트 이미지 중복 때문에 코드 합치고 나서 drawable 보고 수정
             if (likeCheck == true) {
                 likeCheck= false
                 likeButton.setImageResource(R.drawable.ic_favorite_border)
@@ -165,25 +157,10 @@ class ContactDetailFragment : Fragment() {
 
 
 /*
-
-뒤로 가기 버튼 -> 프레그먼트 종료시키기
 번들로 구분 후 invisible 설정
-이미지 이름 전화번호 이메일 메모 데이터 받아서 표시해주기
-
-전화,메세지,이메일 버튼 -> 암시적 인텐트
-
-좋아요 버튼 누르면 이미지 바꿔주기
-
+-> detailInfo?.rawContactId == 0 변경시 수정 필요
 
   편집버튼 -> 프레그먼트 띄워주기, 프레그먼트에서 데이터 받아서 수정해주기 ->
   화면 종료시 데이터 넘겨주기
-
-
-
- */
-
-/* 완료
-*
-* 삭제버튼 -> 다이얼로그 실행 후 컨텍트 매니저 삭제 함수 실행 ?
-*
-* */
+  삭제 -> 완료?
+*/

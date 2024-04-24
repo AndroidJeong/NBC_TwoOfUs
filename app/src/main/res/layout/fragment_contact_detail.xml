@@ -200,7 +200,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_memo_textview"
                     app:layout_constraintWidth_percent="0.4"
-                    tools:text="편집" />
+                    android:text="편집" />
 
 
                 <Button
@@ -215,7 +215,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_edit_button"
                     app:layout_constraintWidth_percent="0.4"
-                    tools:text="삭제" />
+                    android:text="삭제" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

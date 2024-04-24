@@ -2,7 +2,6 @@ package com.nbc.two_of_us.presentation.contact
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nbc.two_of_us.R
@@ -16,7 +15,7 @@ class ContactAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var itemClick: ItemClick
-    private val contacts: MutableList<ContactInfo> = mutableListOf()
+    private var contacts: MutableList<ContactInfo> = mutableListOf()
 
     fun add(contacts: List<ContactInfo>) {
         this.contacts.addAll(contacts)
@@ -30,6 +29,10 @@ class ContactAdapter :
         }
         contacts[index] = contactInfo
         notifyItemChanged(index)
+    }
+
+    fun updateList(contactList: List<ContactInfo>) {
+        contacts = contactList.toMutableList()
     }
 
     interface ItemClick {

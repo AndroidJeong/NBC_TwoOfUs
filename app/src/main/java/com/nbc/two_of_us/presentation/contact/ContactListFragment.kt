@@ -7,14 +7,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
@@ -103,8 +104,9 @@ class ContactListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         contactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
-
-        contactViewModel.loadContactInfo()
+        contactViewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
+            adapter.updateList(contactList)
+        }
 
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -115,7 +117,7 @@ class ContactListFragment : Fragment() {
     private fun setListener() = with(binding) {
         //아이템 클릭 이벤트
         adapter.itemClick = object : ContactAdapter.ItemClick {
-            override fun onClick(contactInfo : ContactInfo) {
+            override fun onClick(contactInfo: ContactInfo) {
                 val bundle = Bundle().apply {
                     putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO, contactInfo)
                 }
@@ -147,17 +149,21 @@ class ContactListFragment : Fragment() {
                     R.id.linear -> {
                         setLayoutType(LayoutType.LIST)
                         binding.apply {
-                            fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                            fragmentListListRecyclerView.layoutManager =
+                                LinearLayoutManager(requireContext())
                         }
                         true
                     }
+
                     R.id.grid -> {
                         setLayoutType(LayoutType.GRID)
                         binding.apply {
-                            fragmentListListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
+                            fragmentListListRecyclerView.layoutManager =
+                                GridLayoutManager(requireContext(), 4)
                         }
                         true
                     }
+
                     else -> false
                 }
             }

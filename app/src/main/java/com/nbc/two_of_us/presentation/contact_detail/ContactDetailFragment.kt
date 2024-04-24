@@ -15,6 +15,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.contact.ContactListFragment
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
+import java.security.acl.Owner
 
 class ContactDetailFragment : Fragment() {
 
@@ -37,6 +38,8 @@ class ContactDetailFragment : Fragment() {
 
         //visible 설정, 번들데이터 받아오기
         val detailInfo: ContactInfo? = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
+
+
         if (detailInfo == null) {
             binding.detailLikeLikebutton.visibility = View.GONE
             binding.detailBackBackbutton.visibility = View.GONE
@@ -62,8 +65,20 @@ class ContactDetailFragment : Fragment() {
             val dialIntent = Intent(Intent.ACTION_DIAL, myUri)
             startActivity(dialIntent)
         }
-        binding.detailTextImagebutton.setOnClickListener { startActivity(Intent(Intent.ACTION_SENDTO)) }
-        binding.detailEmailImagebutton.setOnClickListener {  startActivity(Intent(Intent.ACTION_SENDTO)) }
+        binding.detailTextImagebutton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            val phoneNum = binding.detailPhonenumTextview.text.toString()
+            intent.data = Uri.parse("smsto:${phoneNum} ")
+            startActivity(intent)
+        }
+        binding.detailEmailImagebutton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                type = "text/plain"
+                data =  Uri.parse("mailto")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf("example@naver.com"))
+            }
+            startActivity(intent)
+        }
 
         val likeButton = binding.detailLikeLikebutton
         var likeCheck = detailInfo?.like
@@ -73,10 +88,10 @@ class ContactDetailFragment : Fragment() {
             //하트 이미지 중복 때문에 코드 합치고 나서 drawable 보고 수정
             if (likeCheck == true) {
                 likeCheck= false
-                //likeButton.setImageResource(R.)
+                likeButton.setImageResource(R.drawable.ic_favorite_border)
             } else if(likeCheck == false) {
                 likeCheck = true
-                //likeButton.setImageResource(R.)
+                likeButton.setImageResource(R.drawable.ic_favorite)
             }
 
         }
@@ -87,29 +102,6 @@ class ContactDetailFragment : Fragment() {
         }
 
         binding.detailDeleteButton.setOnClickListener{
-                //  this 타입 mismatch?
-                var builder = AlertDialog.Builder(this)
-                builder.setTitle("연락처 삭제하기")
-                builder.setMessage("정말로 삭제하시겠습니까?")
-                builder.setIcon(R.mipmap.ic_launcher)
-
-
-                val listener = object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        when (p1) {
-                            DialogInterface.BUTTON_POSITIVE ->
-                                //맞는지 확인
-                                detailInfo?.let { it1 -> ContactManager.remove(it1) }
-                            DialogInterface.BUTTON_NEGATIVE ->
-                                return
-                        }
-                    }
-                }
-
-                builder.setPositiveButton("삭제하기", listener)
-                builder.setNegativeButton("뒤로가기", listener)
-
-                builder.show()
 
         }
 
@@ -121,7 +113,7 @@ class ContactDetailFragment : Fragment() {
         super.onDestroyView()
         // 옵저버 패턴?
         //val detailInfo = ContactInfo(1,"", "","","","",false)
-
+        //Owner.notifyUpdate(detailInfo)
 
 
 

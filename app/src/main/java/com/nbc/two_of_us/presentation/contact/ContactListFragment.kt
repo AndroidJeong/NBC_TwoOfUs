@@ -25,6 +25,7 @@ import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.ContactViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
+import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import com.nbc.two_of_us.util.Owner
 
 class ContactListFragment : Fragment() {
@@ -72,6 +73,9 @@ class ContactListFragment : Fragment() {
                         ContactManager.add(contactInfo)
                     }
                     adapter.add(it)
+                    Owner.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
+                        adapter.update(contactInfo)
+                    }
                 }
             },
             onDenied = {
@@ -106,10 +110,6 @@ class ContactListFragment : Fragment() {
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setListener()
-
-        Owner.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
-        }
     }
 
     private fun setListener() = with(binding) {
@@ -132,8 +132,8 @@ class ContactListFragment : Fragment() {
 
         //FAB 클릭 이벤트
         fragmentListAddButtonFab.setOnClickListener {
-//            val fragmentAddDialog = AddContactDialogFragment()
-//            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
+            val fragmentAddDialog = AddContactDialogFragment()
+            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
         }
 
         //헤더 메뉴 클릭 이벤트

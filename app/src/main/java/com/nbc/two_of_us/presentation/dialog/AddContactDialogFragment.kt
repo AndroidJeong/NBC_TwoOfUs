@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,9 +77,13 @@ class AddContactDialogFragment : DialogFragment() {
                 }
             }
 
+            Log.d("dialog", "입력된 값 : ${newContact}")
+
             newContact?.let { contact ->
+                Log.d("dialog", "let에 들어온 값 : ${newContact}")
                 val isAdded = add(contact)
                 if (isAdded) {
+                    Log.d("dialog", "연락처 데이터에 추가 완료")
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
                     val contactInfo = Bundle().apply {
                         putParcelable("contactInfo", contact)

@@ -4,4 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="contact">CONTACT</string>
     <string name="my_page">MY PAGE</string>
+    <string name="call">전화</string>
+    <string name="contacts_permission_dialog_title">연락처 권한 안내</string>
+    <string name="contacts_permission_dialog_message">연락처 정보를 가져오기 위해서 권한이 필요합니다.</string>
+    <string name="contacts_permission_dialog_negative">거절</string>
+    <string name="contacts_permission_dialog_positive">허용</string>
+    <string name="request_permission">연락처 권한 승인하기</string>
 </resources>

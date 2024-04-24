@@ -53,7 +53,7 @@ class ContactDetailFragment : Fragment() {
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
 
-        if (detailInfo == null) {
+        if (detailInfo?.rawContactId == null) {
             binding.detailLikeLikebutton.visibility = View.GONE
             binding.detailBackBackbutton.visibility = View.GONE
             binding.detailDeleteButton.visibility = View.GONE
@@ -91,11 +91,9 @@ class ContactDetailFragment : Fragment() {
             startActivity(intent)
         }
         binding.detailEmailImagebutton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                type = "text/plain"
-                data =  Uri.parse("mailto")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("example@naver.com"))
-            }
+            val intent = Intent(Intent.ACTION_SENDTO)
+            val email = binding.detailEmailTextview.text.toString()
+            intent.data = Uri.parse("mailto:${email}")
             startActivity(intent)
         }
 
@@ -121,40 +119,6 @@ class ContactDetailFragment : Fragment() {
         }
 
         binding.detailDeleteButton.setOnClickListener{
-//  this 타입 mismatch?
-
-            /**
-             * @author 이준영
-             * AlertDialog.Builder의 input parameter는 context 입니다.
-             * 현재 사용하고 계시는 this는 ContactDetailFragment이므로 오류가 생깁니다.
-             * */
-//                var builder = AlertDialog.Builder(this)
-//                builder.setTitle("연락처 삭제하기")
-//                builder.setMessage("정말로 삭제하시겠습니까?")
-//                builder.setIcon(R.mipmap.ic_launcher)
-//
-//
-//                val listener = object : DialogInterface.OnClickListener {
-//                    override fun onClick(p0: DialogInterface?, p1: Int) {
-//                        when (p1) {
-//                            DialogInterface.BUTTON_POSITIVE ->
-//                                //맞는지 확인
-//                                detailInfo?.let { it1 -> ContactManager.remove(it1) }
-//                            DialogInterface.BUTTON_NEGATIVE ->
-//                                return
-//                        }
-//                    }
-//                }
-//
-//                builder.setPositiveButton("삭제하기", listener)
-//                builder.setNegativeButton("뒤로가기", listener)
-//
-//                builder.show()
-
-            /**
-             * @author 이준영
-             * Fragment 상에서 Dialog를 사용하실 때는 DialogFragment 사용을 권장 하고 있습니다.
-             * */
             detailInfo?.let {
                 DeleteConfirmationDialogFragment(it).show(
                     childFragmentManager,
@@ -185,14 +149,6 @@ class ContactDetailFragment : Fragment() {
 
     }
 
-    /**
-     * @author 이준영
-     * Android developer site: https://developer.android.com/guide/fragments/dialogs?hl=ko
-     * string을 그냥 사용하시는 것 보다 "res/strings.xml"에 구현하시고 라소스를 가져와서 쓰시도 좋을 것 같아용~
-     * 메세지만 예시로 해놓을게요
-     *
-     * 마찬가지로 Edit을 위한 다이얼로그도 비슷하게 작업하시면 됩니다
-     * */
     class DeleteConfirmationDialogFragment(
         private val target: ContactInfo
     ) : DialogFragment() {

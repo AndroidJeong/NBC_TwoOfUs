@@ -25,34 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/detail_like_likebutton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="#FFFFFF"
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:visibility="visible"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent"
-                    tools:src="@drawable/btn_detail_likebutton" />
-
-
-                <ImageButton
-                    android:id="@+id/detail_back_backbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/btn_detail_backbutton" />
-
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/detail_imageView"
                 android:layout_width="150dp"
@@ -137,7 +109,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@string/app_name" />
+                app:layout_collapseMode="pin"
+                >
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/detail_like_likebutton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:scaleType="centerCrop"
+                    android:layout_marginRight="20dp"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toTopOf="@+id/detail_back_backbutton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/btn_detail_likebutton" />
+
+
+                <ImageButton
+                    android:id="@+id/detail_back_backbutton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/btn_detail_backbutton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

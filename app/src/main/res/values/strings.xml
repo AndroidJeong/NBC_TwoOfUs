@@ -11,5 +11,7 @@
     <string name="contacts_permission_dialog_positive">허용</string>
     <string name="request_permission">연락처 권한 승인하기</string>
 
-    <string name="detail_fragment_delete_dialog_message_text">정말 종료하시겠습니까?</string>
+    <string name="detail_fragment_delete_dialog_message_text">정말 삭제하시겠습니까?</string>
+    <string name="detail_fragment_delete_dialog_message_negative">돌아가기</string>
+    <string name="detail_fragment_delete_dialog_message_positive">삭제</string>
 </resources>

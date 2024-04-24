@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nbc.two_of_us.databinding.FragmentViewPagerBinding
 import com.nbc.two_of_us.presentation.model.TabType
@@ -29,8 +30,22 @@ class ViewPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setBackPressed()
         setViewPager()
         setTabLayout()
+    }
+
+    private fun setBackPressed() = with(binding) {
+        requireActivity().onBackPressedDispatcher.addCallback(this@ViewPagerFragment) {
+            if (isEnabled) {
+                if (vp.currentItem == 0) {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                } else {
+                    vp.currentItem = vp.currentItem - 1
+                }
+            }
+        }
     }
 
     private fun setViewPager() = with(binding) {

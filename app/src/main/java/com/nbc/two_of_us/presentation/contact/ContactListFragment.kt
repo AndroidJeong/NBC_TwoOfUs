@@ -123,8 +123,9 @@ class ContactListFragment : Fragment() {
                 val fragmentDetail = ContactDetailFragment()
                 fragmentDetail.arguments = bundle
 
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, fragmentDetail)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_view, fragmentDetail)
+                    .setReorderingAllowed(true)
                     .addToBackStack(null)
                     .commit()
             }

@@ -21,7 +21,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
 import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
-import com.nbc.two_of_us.presentation.ContactViewModel
+import com.nbc.two_of_us.presentation.ObservingManager
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
@@ -33,7 +33,7 @@ class ContactListFragment : Fragment() {
     private val binding: FragmentContactListBinding
         get() = _binding!!
 
-    private lateinit var contactViewModel: ContactViewModel
+    private val adapter = ContactAdapter()
 
     private val permissionManager by lazy {
         PermissionManager(this)
@@ -41,7 +41,6 @@ class ContactListFragment : Fragment() {
     private val contactDatasource by lazy {
         ContactDatasource(requireContext())
     }
-    private val adapter = ContactAdapter()
 
     private val contactsPermissionDialog by lazy {
         AlertDialog.Builder(requireContext())
@@ -101,9 +100,9 @@ class ContactListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        contactViewModel = ViewModelProvider(requireActivity()).get(ContactViewModel::class.java)
-
-        contactViewModel.loadContactInfo()
+        ObservingManager.getContactInfo().observe(viewLifecycleOwner) { contactList ->
+            adapter.updateList(contactList)
+        }
 
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())

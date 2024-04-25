@@ -59,8 +59,30 @@ class ContactListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getContactsInfo()
+        if (ContactManager.isEmpty()) {
+            addMyInfo()
+            getContactsInfo()
+        } else {
+            adapter.add(ContactManager.getAll())
+        }
     }
+
+    /**
+     * 사용자 정보 등록
+     */
+    private fun addMyInfo() {
+        val userInfo = ContactInfo(
+            name = "이정아",
+            thumbnail = Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_hanni"),
+            phone = "010-0000-0000",
+            email = "two@naver.com",
+            memo = "",
+            like = false,
+        )
+        ContactManager.add(userInfo)
+        adapter.add(userInfo)
+    }
+
 
     private fun getContactsInfo() {
         permissionManager.getPermission(
@@ -102,14 +124,7 @@ class ContactListFragment : Fragment() {
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setListener()
-
-        viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
-        }
-
-        viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
-            adapter.updateList(contactList)
-        }
+        setObserve()
     }
 
     private fun setListener() = with(binding) {
@@ -174,6 +189,23 @@ class ContactListFragment : Fragment() {
         }
     }
 
+    private fun setObserve() {
+        viewModel.contactLiveData.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.update(it)
+            }
+        }
+        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.update(it)
+            }
+        }
+        viewModel.newContactInfo.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.add(it)
+            }
+        }
+    }
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

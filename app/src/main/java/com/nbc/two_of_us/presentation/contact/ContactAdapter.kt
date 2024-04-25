@@ -22,6 +22,11 @@ class ContactAdapter :
         notifyItemInserted(contacts.size)
     }
 
+    fun add(contactInfo: ContactInfo) {
+        contacts.add(contactInfo)
+        notifyItemInserted(contacts.lastIndex)
+    }
+
     fun update(contactInfo: ContactInfo) {
         val index = this.contacts.indexOfFirst { it.rawContactId == contactInfo.rawContactId }
         if (index == -1) {

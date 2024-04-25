@@ -60,7 +60,6 @@ class ContactListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        getContactsInfo()
         if (ContactManager.isEmpty()) {
             addMyInfo()
             getContactsInfo()

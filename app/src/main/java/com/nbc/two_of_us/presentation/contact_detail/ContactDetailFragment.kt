@@ -29,7 +29,6 @@ class ContactDetailFragment : Fragment() {
         get() = _binding!!
 
     private val viewmodel : ContactInfoViewModel by activityViewModels()
-    //
     private var detailInfo: ContactInfo? = null
 
     override fun onCreateView(
@@ -100,7 +99,7 @@ class ContactDetailFragment : Fragment() {
 
         binding.detailEditButton.setOnClickListener {
 
-            //AddContactDialogFragment
+            //AddContactDialogFragment 열고 데이터 받아오기(수정)
         }
 
         binding.detailDeleteButton.setOnClickListener{
@@ -117,8 +116,9 @@ class ContactDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-
         super.onDestroyView()
+        // ContactListFragment로 데이터 넘겨주기?
+
     }
 
     companion object {

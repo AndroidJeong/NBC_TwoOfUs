@@ -36,7 +36,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/sample_danielle" />
+                tools:src="@drawable/sample_hanni" />
 
             <TextView
                 android:id="@+id/detail_name_textview"

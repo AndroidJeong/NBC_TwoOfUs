@@ -17,6 +17,7 @@ import com.nbc.two_of_us.data.ContactManager.add
 import com.nbc.two_of_us.data.ContactManager.update
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
+import com.nbc.two_of_us.util.DEFAULT_THUMBNAIL_URI
 
 class AddContactDialogFragment(
     private val targetContact: ContactInfo? = null
@@ -57,7 +58,12 @@ class AddContactDialogFragment(
     private fun targetOperation() {
         if (targetContact == null) return
         with(binding) {
-            imageView.setImageURI(targetContact.thumbnail)
+            val uri = if (targetContact.thumbnail == Uri.EMPTY) {
+                Uri.parse(DEFAULT_THUMBNAIL_URI)
+            } else {
+                targetContact.thumbnail
+            }
+            imageView.setImageURI(uri)
             editTextName.setText(targetContact.name)
             editTextPhonenumber.setText(targetContact.phone)
             editTextEmail.setText(targetContact.email)

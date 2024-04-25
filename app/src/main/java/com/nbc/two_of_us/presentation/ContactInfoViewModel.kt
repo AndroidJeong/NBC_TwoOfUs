@@ -1,6 +1,5 @@
 package com.nbc.two_of_us.presentation
 
-import android.provider.ContactsContract.Contacts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +15,7 @@ class ContactInfoViewModel : ViewModel() {
     private val _contactLiveDataForEdit = MutableLiveData<Event<ContactInfo>>()
     val contactLiveDataForEdit: LiveData<Event<ContactInfo>> = _contactLiveDataForEdit
     fun setContactForEdit(contactInfo: ContactInfo) {
-        _contactLiveDataForEdit.value = Event(contactInfo)
+        _contactLiveDataForEdit.value = Event(contactInfo, count = 2)
     }
 
 

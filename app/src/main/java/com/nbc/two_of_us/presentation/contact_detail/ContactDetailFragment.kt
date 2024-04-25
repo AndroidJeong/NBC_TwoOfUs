@@ -17,7 +17,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
-import com.nbc.two_of_us.util.Event
+import com.nbc.two_of_us.util.DEFAULT_THUMBNAIL_URI
 import com.nbc.two_of_us.util.MY_RAW_CONTACT_ID
 
 class ContactDetailFragment : Fragment() {
@@ -45,22 +45,20 @@ class ContactDetailFragment : Fragment() {
 
         // 하단에 MY PAGE를 눌러서 진입했는지 확인
         detailInfo?.let {
-            detailImageView.setImageURI(it.thumbnail)
-            detailNameTextview.text = it.name
-            detailPhonenumTextview.text = it.phone
-            detailEmailTextview.text = "이메일: ${it.email}"
-            detailLikeLikebutton.setImageResource(getLikeButtonImageRes(it.like))
-
-            if (it.rawContactId == MY_RAW_CONTACT_ID) {
-                detailDeleteButton.visibility = View.GONE
-            }
+            updateUI(it)
         } ?: run {
             detailLikeLikebutton.visibility = View.GONE
             detailBackBackbutton.visibility = View.GONE
             detailDeleteButton.visibility = View.GONE
 
             ContactManager.getUserInfo()?.let {
-                detailImageView.setImageURI(it.thumbnail)
+                detailInfo = it
+                val uri = if (it.thumbnail == Uri.EMPTY) {
+                    Uri.parse(DEFAULT_THUMBNAIL_URI)
+                } else {
+                    it.thumbnail
+                }
+                detailImageView.setImageURI(uri)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
                 detailEmailTextview.text = "이메일: ${it.email}"
@@ -94,6 +92,7 @@ class ContactDetailFragment : Fragment() {
         detailLikeLikebutton.setOnClickListener {
             detailInfo?.let { detailInfoNonNull ->
                 val edited = detailInfoNonNull.copy(like = !detailInfoNonNull.like)
+                detailInfo = edited
                 viewmodel.setContactForEdit(edited)
                 detailLikeLikebutton.setImageResource(getLikeButtonImageRes(edited.like))
             }
@@ -106,9 +105,18 @@ class ContactDetailFragment : Fragment() {
 //                detailImageView.setImageURI(thumbnail)
 //            }
             it.getContentIfNotHandled()?.let { contactInfo ->
+                detailInfo = contactInfo
+
+                val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+                    Uri.parse(DEFAULT_THUMBNAIL_URI)
+                } else {
+                    contactInfo.thumbnail
+                }
                 detailNameTextview.text = contactInfo.name
+                detailEmailTextview.text = contactInfo.email
                 detailPhonenumTextview.text = contactInfo.phone
-                detailImageView.setImageURI(contactInfo.thumbnail)
+                detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
+                detailImageView.setImageURI(uri)
             }
         }
 
@@ -128,6 +136,39 @@ class ContactDetailFragment : Fragment() {
         }
     }
 
+    private fun updateUI(contactInfo: ContactInfo) = with(binding) {
+        val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+            Uri.parse(DEFAULT_THUMBNAIL_URI)
+        } else {
+            contactInfo.thumbnail
+        }
+        detailImageView.setImageURI(uri)
+        detailNameTextview.text = contactInfo.name
+        detailPhonenumTextview.text = contactInfo.phone
+        detailEmailTextview.text = "이메일: ${contactInfo.email}"
+        detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
+
+        if (contactInfo.rawContactId == MY_RAW_CONTACT_ID) {
+            detailDeleteButton.visibility = View.GONE
+        }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        val restoredInfo: ContactInfo? = savedInstanceState?.getParcelable(BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION)
+        // 화면 회전에 의해서 이전 데이터가 복원 처리된 경우에는 UI를 화면 회전 데이터로 변경함
+        if (restoredInfo != null) {
+            updateUI(restoredInfo)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelable(BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION, detailInfo)
+    }
+
     private fun getLikeButtonImageRes(like: Boolean): Int {
         return if(like) R.drawable.ic_favorite else R.drawable.ic_favorite_border
     }
@@ -142,6 +183,7 @@ class ContactDetailFragment : Fragment() {
     companion object {
         // ContactListFragment에서 연락처 정보를 Bundle로 넘기기 위한 Key 값입니다.
         const val BUNDLE_KEY_FOR_CONTACT_INFO = "BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
+        const val BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION = "BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION_BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
     }
 
     class DeleteConfirmationDialogFragment(

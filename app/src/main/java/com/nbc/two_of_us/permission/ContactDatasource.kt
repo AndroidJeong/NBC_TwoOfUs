@@ -103,7 +103,6 @@ class ContactDatasource(context: Context) {
 
                         contactInfoList.add(
                             ContactInfo(
-                                rawContactId = id.toInt(),
                                 name = name,
                                 thumbnail = photoUri.toUri(),
                                 phone = number,

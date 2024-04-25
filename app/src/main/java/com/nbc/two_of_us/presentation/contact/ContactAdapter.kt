@@ -1,5 +1,6 @@
 package com.nbc.two_of_us.presentation.contact
 
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -130,7 +131,12 @@ class ContactAdapter :
     inner class TypeBaseViewHolder(private val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(contactInfo: ContactInfo) {
             binding.apply {
-                itemProfileCircleImageView.setImageURI(contactInfo.thumbnail)
+                val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+                    Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+                } else {
+                    contactInfo.thumbnail
+                }
+                itemProfileCircleImageView.setImageURI(uri)
                 itemNameTextView.text = contactInfo.name
 
                 if (contactInfo.like) {
@@ -156,27 +162,30 @@ class ContactAdapter :
 
     inner class TypeReverseViewHolder(private val binding: ItemListReverseBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(contactInfo: ContactInfo) {
-            binding.apply {
-                itemProfileCircleImageViewReverse.setImageURI(contactInfo.thumbnail)
-                itemNameTextViewReverse.text = contactInfo.name
+        fun bind(contactInfo: ContactInfo) = with(binding) {
+            val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+            } else {
+                contactInfo.thumbnail
+            }
+            itemProfileCircleImageViewReverse.setImageURI(uri)
+            itemNameTextViewReverse.text = contactInfo.name
 
-                if (contactInfo.like) {
-                    binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite)
+            if (contactInfo.like) {
+                binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite_border)
+            }
+
+            itemLikeImageViewReverse.setOnClickListener {
+                val updated = contactInfo.copy(like = !contactInfo.like)
+                val isUpdated = ContactManager.update(updated)
+
+                if (isUpdated) {
+                    contacts[adapterPosition] = updated
+                    notifyItemChanged(adapterPosition, updated)
                 } else {
-                    binding.itemLikeImageViewReverse.setImageResource(R.drawable.ic_favorite_border)
-                }
-
-                itemLikeImageViewReverse.setOnClickListener {
-                    val updated = contactInfo.copy(like = !contactInfo.like)
-                    val isUpdated = ContactManager.update(updated)
-
-                    if (isUpdated) {
-                        contacts[adapterPosition] = updated
-                        notifyItemChanged(adapterPosition, updated)
-                    } else {
-                        Log.d("ContactAdapter", "좋아요 업데이트 실패")
-                    }
+                    Log.d("ContactAdapter", "좋아요 업데이트 실패")
                 }
             }
         }
@@ -184,29 +193,33 @@ class ContactAdapter :
 
     inner class TypeGridViewHolder(private val binding: ItemListGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(contactInfo: ContactInfo) {
-            binding.apply {
-                itemProfileCircleImageViewGrid.setImageURI(contactInfo.thumbnail)
-                itemNameTextViewGrid.text = contactInfo.name
+        fun bind(contactInfo: ContactInfo) = with(binding) {
+            val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+                Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+            } else {
+                contactInfo.thumbnail
+            }
+            itemProfileCircleImageViewGrid.setImageURI(uri)
+            itemNameTextViewGrid.text = contactInfo.name
 
-                if (contactInfo.like) {
-                    binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite)
+            if (contactInfo.like) {
+                binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite_border)
+            }
+
+            itemLikeImageViewGrid.setOnClickListener {
+                val updated = contactInfo.copy(like = !contactInfo.like)
+                val isUpdated = ContactManager.update(updated)
+
+                if (isUpdated) {
+                    contacts[adapterPosition] = updated
+                    notifyItemChanged(adapterPosition, updated)
                 } else {
-                    binding.itemLikeImageViewGrid.setImageResource(R.drawable.ic_favorite_border)
-                }
-
-                itemLikeImageViewGrid.setOnClickListener {
-                    val updated = contactInfo.copy(like = !contactInfo.like)
-                    val isUpdated = ContactManager.update(updated)
-
-                    if (isUpdated) {
-                        contacts[adapterPosition] = updated
-                        notifyItemChanged(adapterPosition, updated)
-                    } else {
-                        Log.d("ContactAdapter", "좋아요 업데이트 실패")
-                    }
+                    Log.d("ContactAdapter", "좋아요 업데이트 실패")
                 }
             }
+
         }
     }
 }

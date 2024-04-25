@@ -17,6 +17,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
+import com.nbc.two_of_us.util.DEFAULT_THUMBNAIL_URI
 import com.nbc.two_of_us.util.Event
 import com.nbc.two_of_us.util.MY_RAW_CONTACT_ID
 
@@ -45,7 +46,12 @@ class ContactDetailFragment : Fragment() {
 
         // 하단에 MY PAGE를 눌러서 진입했는지 확인
         detailInfo?.let {
-            detailImageView.setImageURI(it.thumbnail)
+            val uri = if (it.thumbnail == Uri.EMPTY) {
+                Uri.parse(DEFAULT_THUMBNAIL_URI)
+            } else {
+                it.thumbnail
+            }
+            detailImageView.setImageURI(uri)
             detailNameTextview.text = it.name
             detailPhonenumTextview.text = it.phone
             detailEmailTextview.text = "이메일: ${it.email}"
@@ -60,7 +66,12 @@ class ContactDetailFragment : Fragment() {
             detailDeleteButton.visibility = View.GONE
 
             ContactManager.getUserInfo()?.let {
-                detailImageView.setImageURI(it.thumbnail)
+                val uri = if (it.thumbnail == Uri.EMPTY) {
+                    Uri.parse(DEFAULT_THUMBNAIL_URI)
+                } else {
+                    it.thumbnail
+                }
+                detailImageView.setImageURI(uri)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
                 detailEmailTextview.text = "이메일: ${it.email}"
@@ -106,9 +117,14 @@ class ContactDetailFragment : Fragment() {
 //                detailImageView.setImageURI(thumbnail)
 //            }
             it.getContentIfNotHandled()?.let { contactInfo ->
+                val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
+                    Uri.parse(DEFAULT_THUMBNAIL_URI)
+                } else {
+                    contactInfo.thumbnail
+                }
                 detailNameTextview.text = contactInfo.name
                 detailPhonenumTextview.text = contactInfo.phone
-                detailImageView.setImageURI(contactInfo.thumbnail)
+                detailImageView.setImageURI(uri)
             }
         }
 

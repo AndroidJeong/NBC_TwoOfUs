@@ -72,7 +72,6 @@ class ContactAdapter :
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
-
     }
 
     override fun getItemCount(): Int = contacts.size
@@ -87,39 +86,30 @@ class ContactAdapter :
         } else {
             ViewType.GRID_LIST.viewType
         }
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = contacts[position]
 
-        when (holder.itemViewType) {
-            ViewType.BASE_LIST.viewType -> {
-                val typeBaseHolder = holder as TypeBaseViewHolder
-                typeBaseHolder.bind(currentItem)
-
-                holder.itemView.setOnClickListener {
-                    itemClick.onClick(contacts[position])
-                }
+        when (holder) {
+            is TypeBaseViewHolder -> {
+                holder.bind(currentItem)
             }
 
-            ViewType.REVERSE_LIST.viewType -> {
-                val typeReverseHolder = holder as TypeReverseViewHolder
-                typeReverseHolder.bind(currentItem)
+            is TypeReverseViewHolder -> {
+                holder.bind(currentItem)
 
-                holder.itemView.setOnClickListener {
-                    itemClick.onClick(contacts[position])
-                }
             }
 
-            ViewType.GRID_LIST.viewType -> {
-                val typeGridHolder = holder as TypeGridViewHolder
-                typeGridHolder.bind(currentItem)
-
-                holder.itemView.setOnClickListener {
-                    itemClick.onClick(contacts[position])
-                }
+            is TypeGridViewHolder -> {
+                holder.bind(currentItem)
             }
+
+            else -> throw IllegalArgumentException("Unsupported ViewHolder type")
+        }
+
+        holder.itemView.setOnClickListener {
+            itemClick.onClick(contacts[position])
         }
     }
 

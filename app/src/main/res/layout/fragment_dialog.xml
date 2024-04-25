@@ -30,11 +30,11 @@
             android:layout_width="77dp"
             android:layout_height="86dp"
             android:layout_marginBottom="52dp"
+            android:src="@drawable/basic_profile"
             app:layout_constraintBottom_toTopOf="@+id/editText_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            tools:src="@drawable/sample_hanni"
             tools:srcCompat="@tools:sample/avatars" />
 
         <EditText

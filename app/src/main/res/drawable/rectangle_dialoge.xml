@@ -9,6 +9,6 @@
     <corners
         android:radius="30dp"/>
 
-    <solid android:color="@color/md_theme_light_primary" />
+    <solid android:color="@color/md_theme_light_surfaceVariant" />
 
 </shape>

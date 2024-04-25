@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.nbc.two_of_us.data.ContactInfo
-import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
 import com.nbc.two_of_us.data.ContactManager.update
 import com.nbc.two_of_us.databinding.FragmentDialogBinding

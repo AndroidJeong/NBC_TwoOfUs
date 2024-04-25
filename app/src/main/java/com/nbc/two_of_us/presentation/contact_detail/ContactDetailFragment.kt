@@ -36,20 +36,20 @@ class ContactDetailFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
         if (detailInfo?.rawContactId == 0) {
-            binding.detailLikeLikebutton.visibility = View.GONE
-            binding.detailBackBackbutton.visibility = View.GONE
-            binding.detailDeleteButton.visibility = View.GONE
+            detailLikeLikebutton.visibility = View.GONE
+            detailBackBackbutton.visibility = View.GONE
+            detailDeleteButton.visibility = View.GONE
         }
 
         viewmodel.setContactForEdit(detailInfo!!)
-        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) {
-            with(binding) {
+        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
                 detailImageView.setImageURI(it.thumbnail)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
@@ -66,30 +66,30 @@ class ContactDetailFragment : Fragment() {
 //        binding.detailMemoTextview.text = "메모: ${detailInfo?.memo}"
 
         //프레그먼트 종료코드?
-        binding.detailBackBackbutton.setOnClickListener {
+        detailBackBackbutton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        binding.detailCallImagebutton.setOnClickListener{
-            val phoneNum = binding.detailPhonenumTextview.text.toString()
+        detailCallImagebutton.setOnClickListener{
+            val phoneNum = detailPhonenumTextview.text.toString()
             val myUri = Uri.parse("tel:${phoneNum}")
             val dialIntent = Intent(Intent.ACTION_DIAL, myUri)
             startActivity(dialIntent)
         }
-        binding.detailTextImagebutton.setOnClickListener {
+        detailTextImagebutton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
-            val phoneNum = binding.detailPhonenumTextview.text.toString()
+            val phoneNum = detailPhonenumTextview.text.toString()
             intent.data = Uri.parse("smsto:${phoneNum} ")
             startActivity(intent)
         }
-        binding.detailEmailImagebutton.setOnClickListener {
+        detailEmailImagebutton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
-            val email = binding.detailEmailTextview.text.toString()
+            val email = detailEmailTextview.text.toString()
             intent.data = Uri.parse("mailto:${email}")
             startActivity(intent)
         }
 
-        val likeButton = binding.detailLikeLikebutton
+        val likeButton = detailLikeLikebutton
         var likeCheck = detailInfo?.like
 
         likeButton.setOnClickListener {
@@ -101,16 +101,15 @@ class ContactDetailFragment : Fragment() {
                 likeCheck = true
                 likeButton.setImageResource(R.drawable.ic_favorite)
             }
-
         }
 
-        binding.detailEditButton.setOnClickListener {
+        detailEditButton.setOnClickListener {
             val fragmentAddDialog = AddContactDialogFragment(detailInfo)
             fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
             //AddContactDialogFragment 열고 데이터 받아오기(수정)
         }
 
-        binding.detailDeleteButton.setOnClickListener{
+        detailDeleteButton.setOnClickListener{
             detailInfo?.let {
                 DeleteConfirmationDialogFragment(it).show(
                     childFragmentManager,

@@ -172,18 +172,20 @@ class ContactListFragment : Fragment() {
     }
 
     private fun setObserve() {
-        viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
+        viewModel.contactLiveData.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.update(it)
+            }
         }
-        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
+        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.update(it)
+            }
         }
-        viewModel.newContactInfo.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.add(contactInfo)
-        }
-
-        viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
-            adapter.updateList(contactList)
+        viewModel.newContactInfo.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                adapter.add(it)
+            }
         }
     }
     override fun onDestroyView() {

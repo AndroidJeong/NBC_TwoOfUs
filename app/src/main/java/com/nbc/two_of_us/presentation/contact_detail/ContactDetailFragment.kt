@@ -66,6 +66,7 @@ class ContactDetailFragment : Fragment() {
             detailDeleteButton.visibility = View.GONE
 
             ContactManager.getUserInfo()?.let {
+                detailInfo = it
                 val uri = if (it.thumbnail == Uri.EMPTY) {
                     Uri.parse(DEFAULT_THUMBNAIL_URI)
                 } else {

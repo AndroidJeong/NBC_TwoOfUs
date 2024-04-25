@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="243dp"
+    android:height="243dp"
+    android:viewportWidth="243"
+    android:viewportHeight="243">
+  <path
+      android:pathData="M0,121.5C0,54.4 54.4,0 121.5,0C188.6,0 243,54.4 243,121.5C243,188.6 188.6,243 121.5,243C54.4,243 0,188.6 0,121.5Z"
+      android:fillColor="#21C174"/>
+  <path
+      android:pathData="M0,121.5C0,54.4 54.4,0 121.5,0C188.6,0 243,54.4 243,121.5C243,188.6 188.6,243 121.5,243C54.4,243 0,188.6 0,121.5Z"
+      android:fillAlpha="0.2">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="209.82"
+          android:startY="37.38"
+          android:endX="66.12"
+          android:endY="174.31"
+          android:type="linear">
+        <item android:offset="0" android:color="#00000000"/>
+        <item android:offset="1" android:color="#FF0B21E9"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M68,176V143.59H68C68,143.51 68,143.43 68,143.35C68,143.27 68,143.19 68,143.11C68.15,129.73 80.87,118.92 96.54,118.92C106.55,118.92 115.36,123.33 120.45,130.01C125.64,123.61 134.34,119.4 144.19,119.4C159.99,119.4 172.81,130.21 172.97,143.59H172.97V176H68ZM115.4,172V143.59H115.41C115.45,140.02 116.39,136.63 118.06,133.58C113.98,127.37 106.13,122.92 96.54,122.92C82.38,122.92 72,132.63 72,143.35C72,143.41 72,143.48 72,143.54L72.05,147.59H72V172H115.4Z"
+      android:fillColor="#ffffff"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M116.86,91.35C116.86,102.04 107.76,110.7 96.54,110.7C85.32,110.7 76.22,102.04 76.22,91.35C76.22,80.66 85.32,72 96.54,72C107.76,72 116.86,80.66 116.86,91.35ZM112.86,91.35C112.86,99.64 105.74,106.7 96.54,106.7C87.34,106.7 80.22,99.64 80.22,91.35C80.22,83.05 87.34,76 96.54,76C105.74,76 112.86,83.05 112.86,91.35Z"
+      android:fillColor="#ffffff"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M144.19,111.18C155.27,111.18 164.26,102.41 164.26,91.59C164.26,80.77 155.27,72 144.19,72C133.1,72 124.11,80.77 124.11,91.59C124.11,102.41 133.1,111.18 144.19,111.18Z"
+      android:fillColor="#ffffff"/>
+</vector>

@@ -10,16 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
-import com.nbc.two_of_us.presentation.ObservingManager
+import com.nbc.two_of_us.presentation.ContactInfoViewModel
 
 class AddContactDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
     private var selectedImageUri: Uri? = null
+    private val viewModel: ContactInfoViewModel by activityViewModels()
+
 
     // XML을 이용한 커스텀 Dialog 생성시 이 함수가 아닌 onCreateView, onViewCreated 등을 사용해야 합니다.
     // https://developer.android.com/guide/fragments/dialogs
@@ -77,7 +79,7 @@ class AddContactDialogFragment : DialogFragment() {
             newContact?.let { contact ->
                 val isAdded = add(contact)
                 if (isAdded) {
-                    ObservingManager.addContactInfo(ContactManager.getAll())
+                    viewModel.updateList(ContactManager.getAll())
 
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
                     val contactInfo = Bundle().apply {

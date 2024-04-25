@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
@@ -21,11 +21,10 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
 import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
-import com.nbc.two_of_us.presentation.ObservingManager
+import com.nbc.two_of_us.presentation.ContactInfoViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
-import com.nbc.two_of_us.util.Owner
 
 class ContactListFragment : Fragment() {
 
@@ -34,6 +33,8 @@ class ContactListFragment : Fragment() {
         get() = _binding!!
 
     private val adapter = ContactAdapter()
+
+    private val viewModel: ContactInfoViewModel by activityViewModels()
 
     private val permissionManager by lazy {
         PermissionManager(this)
@@ -71,9 +72,6 @@ class ContactListFragment : Fragment() {
                         ContactManager.add(contactInfo)
                     }
                     adapter.add(it)
-                    Owner.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
-                        adapter.update(contactInfo)
-                    }
                 }
             },
             onDenied = {
@@ -100,14 +98,18 @@ class ContactListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        ObservingManager.getContactInfo().observe(viewLifecycleOwner) { contactList ->
-            adapter.updateList(contactList)
-        }
-
         fragmentListListRecyclerView.adapter = adapter
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setListener()
+
+        viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.update(contactInfo)
+        }
+
+        viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
+            adapter.updateList(contactList)
+        }
     }
 
     private fun setListener() = with(binding) {

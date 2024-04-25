@@ -24,11 +24,12 @@ class ContactInfoViewModel : ViewModel() {
      * @author 이준영
      * for delete a contact info
      * */
-    private val _deletedContactLiveData = MutableLiveData<Event<ContactInfo>>()
-    val deletedContactLiveData: LiveData<Event<ContactInfo>> = _deletedContactLiveData
+    private val _contactLiveDataForDelete = MutableLiveData<Event<ContactInfo>>()
+    val contactLiveDataForDelete: LiveData<Event<ContactInfo>> = _contactLiveDataForDelete
     fun setDeletedContact(contactInfo: ContactInfo) {
-        _deletedContactLiveData.value = Event(contactInfo)
+        _contactLiveDataForDelete.value = Event(contactInfo)
     }
+
 
     /**
      * @author 이종성

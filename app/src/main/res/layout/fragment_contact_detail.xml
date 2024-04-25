@@ -175,19 +175,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="이메일" />
 
-                <TextView
-                    android:id="@+id/detail_memo_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="#FFFFFF"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_email_textview"
-                    tools:text="메모" />
-
                 <Button
                     android:id="@+id/detail_edit_button"
                     android:layout_width="0dp"
@@ -197,7 +184,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_memo_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_email_textview"
                     app:layout_constraintWidth_percent="0.4"
                     android:text="편집" />
 

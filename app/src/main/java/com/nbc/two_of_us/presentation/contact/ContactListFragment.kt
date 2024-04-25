@@ -138,7 +138,7 @@ class ContactListFragment : Fragment() {
                 fragmentDetail.arguments = bundle
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view, fragmentDetail)
+                    .add(R.id.fragment_container_view, fragmentDetail)
                     .setReorderingAllowed(true)
                     .addToBackStack(null)
                     .commit()

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -59,6 +60,7 @@ class ContactListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        retainInstance = true
         getContactsInfo()
     }
 
@@ -70,6 +72,7 @@ class ContactListFragment : Fragment() {
                 contactDatasource.getAllContacts {
                     for (contactInfo in it) {
                         ContactManager.add(contactInfo)
+                        Log.d("listFragment", "추가된 데이터: ${contactInfo}")
                     }
                     adapter.add(it)
                 }

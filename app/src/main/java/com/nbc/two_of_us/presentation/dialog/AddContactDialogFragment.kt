@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.nbc.two_of_us.data.ContactInfo
+import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
 import com.nbc.two_of_us.data.ContactManager.update
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
@@ -87,6 +88,9 @@ class AddContactDialogFragment(
         } else if (name.isEmpty() || num.isEmpty()) {
             Toast.makeText(requireContext(), "이름 또는 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
+        } else if (ContactManager.checkExist(num)) {
+            Toast.makeText(requireContext(), "이미 존재하는 연락처입니다.", Toast.LENGTH_SHORT).show()
+            return
         }
 
         val editedContact = targetContact?.copy(
@@ -124,6 +128,9 @@ class AddContactDialogFragment(
             Toast.makeText(requireContext(), "이름과 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
         } else if (address.isEmpty() || !address.matches(emailPattern.toRegex())) {
             Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
+        } else if (ContactManager.checkExist(num)) {
+            Toast.makeText(requireContext(), "이미 존재하는 연락처 번호입니다.", Toast.LENGTH_SHORT).show()
+            return
         }
 
         val newContact = ContactInfo(

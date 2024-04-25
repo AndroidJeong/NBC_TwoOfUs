@@ -57,4 +57,11 @@ object ContactManager {
     fun isEmpty(): Boolean {
         return contacts.isEmpty()
     }
+
+    /**
+     * 전화번호가 이미 존재하는지 확인하는 함수
+     */
+    fun checkExist(num: String): Boolean {
+        return contacts.values.firstOrNull { it.phone == num } != null
+    }
 }

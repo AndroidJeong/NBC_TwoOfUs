@@ -11,8 +11,7 @@
         android:id="@+id/item_profile_circleImageView"
         android:layout_width="42sp"
         android:layout_height="42sp"
-        android:src="@drawable/sample_danielle"
-        app:civ_border_width="1dp"
+        android:src="@drawable/basic_profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

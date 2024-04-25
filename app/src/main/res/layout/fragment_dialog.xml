@@ -13,7 +13,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background= "@drawable/rectangle"
         android:radius = "20dp">
 
         <ImageView
@@ -31,7 +30,7 @@
             android:layout_width="77dp"
             android:layout_height="86dp"
             android:layout_marginBottom="52dp"
-            android:src="@drawable/sample_hanni"
+            android:src="@drawable/basic_profile"
             app:layout_constraintBottom_toTopOf="@+id/editText_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"

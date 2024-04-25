@@ -1,6 +1,7 @@
 package com.nbc.two_of_us.presentation.dialog
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.data.ContactManager.add
@@ -82,7 +84,7 @@ class AddContactDialogFragment(
         var address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (name.isNotEmpty() && num.isNotEmpty()) {
+        if (name.isNotEmpty() && num.isNotEmpty() && num.length >= 7) {
             val editedContact = if (selectedImageUri != null) {
                 selectedImageUri?.let { uri ->
                     targetContact?.copy(
@@ -129,7 +131,16 @@ class AddContactDialogFragment(
         var address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (name.isNotEmpty() && num.isNotEmpty()) {
+        val resourceId = R.drawable.basic_profile
+        val basic = Uri.parse(
+            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    resources.getResourcePackageName(resourceId) + '/' +
+                    resources.getResourceTypeName(resourceId) + '/' +
+                    resources.getResourceEntryName(resourceId))
+
+        ("android.resource://TwoOfUs.app/drawable/basic_profile")
+
+        if (name.isNotEmpty() && num.isNotEmpty() && num.length >= 7) {
             val newContact = if (selectedImageUri != null) {
                 selectedImageUri?.let { uri ->
                     ContactInfo(ContactManager.getAll().size + 1, name, uri, num, address, "", false)
@@ -139,7 +150,7 @@ class AddContactDialogFragment(
                     Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
                     null
                 } else {
-                    ContactInfo(ContactManager.getAll().size + 1, name, Uri.EMPTY, num, address, "", false)
+                    ContactInfo(ContactManager.getAll().size + 1, name, basic, num, address, "", false)
                 }
             }
 
@@ -147,12 +158,7 @@ class AddContactDialogFragment(
                 val isAdded = add(contact)
                 if (isAdded) {
                     viewModel.updateList(ContactManager.getAll())
-
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
-                    val contactInfo = Bundle().apply {
-                        putParcelable("contactInfo", contact)
-                    }
-                    parentFragmentManager.setFragmentResult("Contact", contactInfo)
                     dismiss()
                 } else {
                     Toast.makeText(requireContext(), "이미 있는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT).show()

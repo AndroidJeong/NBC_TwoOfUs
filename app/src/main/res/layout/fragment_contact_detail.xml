@@ -30,13 +30,10 @@
                 android:layout_width="150dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="50dp"
-                app:civ_border_color="@color/black"
-                app:civ_border_overlay="true"
-                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/sample_danielle" />
+                tools:src="@drawable/basic_profile" />
 
             <TextView
                 android:id="@+id/detail_name_textview"
@@ -70,36 +67,30 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="15dp"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toStartOf="@+id/detail_text_imagebutton"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_phonenum_textview"
-                android:src="@drawable/btn_detail_callbutton" />
+                android:src="@drawable/phone" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/detail_text_imagebutton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toStartOf="@+id/detail_email_imagebutton"
                 app:layout_constraintStart_toEndOf="@+id/detail_call_imagebutton"
                 app:layout_constraintTop_toTopOf="@+id/detail_call_imagebutton"
-                android:src="@drawable/btn_detail_chatbutton" />
+                android:src="@drawable/messge" />
 
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/detail_email_imagebutton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/detail_text_imagebutton"
                 app:layout_constraintTop_toTopOf="@+id/detail_text_imagebutton"
-                android:src="@drawable/btn_detail_emailbutton" />
+                android:src="@drawable/email" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

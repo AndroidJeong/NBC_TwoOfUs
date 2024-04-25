@@ -105,6 +105,8 @@ class ContactDetailFragment : Fragment() {
 //                detailImageView.setImageURI(thumbnail)
 //            }
             it.getContentIfNotHandled()?.let { contactInfo ->
+                detailInfo = contactInfo
+
                 val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
                     Uri.parse(DEFAULT_THUMBNAIL_URI)
                 } else {
@@ -113,6 +115,7 @@ class ContactDetailFragment : Fragment() {
                 detailNameTextview.text = contactInfo.name
                 detailEmailTextview.text = contactInfo.email
                 detailPhonenumTextview.text = contactInfo.phone
+                detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
                 detailImageView.setImageURI(uri)
             }
         }

@@ -195,10 +195,9 @@ class ContactListFragment : Fragment() {
             }
         }
         viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
-//            event.getContentIfNotHandled()?.let {
-//                adapter.update(it)
-//            }
-            adapter.update(event.peekContent())
+            event.getContentIfNotHandled()?.let {
+                adapter.update(it)
+            }
         }
         viewModel.newContactInfo.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {

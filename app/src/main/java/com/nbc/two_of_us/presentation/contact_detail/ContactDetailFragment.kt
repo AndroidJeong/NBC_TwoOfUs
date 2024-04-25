@@ -1,11 +1,9 @@
 package com.nbc.two_of_us.presentation.contact_detail
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +12,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
-import com.nbc.two_of_us.data.ContactManager
 import androidx.fragment.app.activityViewModels
+import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
-import com.nbc.two_of_us.presentation.contact.ContactListFragment
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
-import java.security.acl.Owner
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
 
 class ContactDetailFragment : Fragment() {
@@ -30,6 +26,7 @@ class ContactDetailFragment : Fragment() {
 
     private val viewmodel : ContactInfoViewModel by activityViewModels()
     private var detailInfo: ContactInfo? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,19 +41,29 @@ class ContactDetailFragment : Fragment() {
 
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
-
         if (detailInfo?.rawContactId == 0) {
             binding.detailLikeLikebutton.visibility = View.GONE
             binding.detailBackBackbutton.visibility = View.GONE
             binding.detailDeleteButton.visibility = View.GONE
         }
 
+        viewmodel.setContactForEdit(detailInfo!!)
+        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) {
+            with(binding) {
+                detailImageView.setImageURI(it.thumbnail)
+                detailNameTextview.text = it.name
+                detailPhonenumTextview.text = it.phone
+                detailEmailTextview.text = "이메일: ${it.email}"
+                detailMemoTextview.text = "메모: ${it.memo}"
+            }
+        }
+
         // 데이터 받아오기
-        binding.detailImageView.setImageURI(detailInfo?.thumbnail)
-        binding.detailNameTextview.text = detailInfo?.name
-        binding.detailPhonenumTextview.text = detailInfo?.phone
-        binding.detailEmailTextview.text = "이메일: ${detailInfo?.email}"
-        binding.detailMemoTextview.text = "메모: ${detailInfo?.memo}"
+//        binding.detailImageView.setImageURI(detailInfo?.thumbnail)
+//        binding.detailNameTextview.text = detailInfo?.name
+//        binding.detailPhonenumTextview.text = detailInfo?.phone
+//        binding.detailEmailTextview.text = "이메일: ${detailInfo?.email}"
+//        binding.detailMemoTextview.text = "메모: ${detailInfo?.memo}"
 
         //프레그먼트 종료코드?
         binding.detailBackBackbutton.setOnClickListener {
@@ -98,7 +105,8 @@ class ContactDetailFragment : Fragment() {
         }
 
         binding.detailEditButton.setOnClickListener {
-
+            val fragmentAddDialog = AddContactDialogFragment(detailInfo)
+            fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
             //AddContactDialogFragment 열고 데이터 받아오기(수정)
         }
 
@@ -129,11 +137,38 @@ class ContactDetailFragment : Fragment() {
     class DeleteConfirmationDialogFragment(
         private val target: ContactInfo
     ) : DialogFragment() {
+        private val viewmodel : ContactInfoViewModel by activityViewModels()
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
             AlertDialog.Builder(requireContext())
                 .setMessage(R.string.detail_fragment_delete_dialog_message_text)
                 .setPositiveButton("삭제하기") { _,_ ->
+
+                    /**
+                     * @author 이준영
+                     * list fragment에서 삭제 된 contactinfo 반영 필요!
+                     * */
+
                     ContactManager.remove(target)
+                    viewmodel.setDeletedContact(target)
+                    requireActivity().supportFragmentManager.popBackStack()
+
+
+
+                    /**
+                     * 삭제 후에 뒤로가기 - 확인 완료
+                     * */
+                    // Block start
+//                    if(ContactManager.remove(target)) {
+//                        viewmodel.updateList(ContactManager.getAll())
+//                    }
+
+//                    val currentList = mutableListOf<ContactInfo>()
+//                    viewmodel.contactLiveDataList.value?.let { currentList.addAll(it) }
+//                    currentList.remove(target)
+//                    viewmodel.updateList(currentList)
+                    // Block end
+
+
                 } // onPositive Lambda
                 .setNegativeButton("뒤로가기") { _,_ -> } // onNegative Lambda
                 .create()

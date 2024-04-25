@@ -15,10 +15,12 @@ import androidx.fragment.app.Fragment
 import com.nbc.two_of_us.R
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
+import androidx.fragment.app.activityViewModels
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.contact.ContactListFragment
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import java.security.acl.Owner
+import com.nbc.two_of_us.presentation.ContactInfoViewModel
 
 class ContactDetailFragment : Fragment() {
 
@@ -26,6 +28,8 @@ class ContactDetailFragment : Fragment() {
     private val binding: FragmentContactDetailBinding
         get() = _binding!!
 
+    private val viewmodel : ContactInfoViewModel by activityViewModels()
+    //
     private var detailInfo: ContactInfo? = null
 
     override fun onCreateView(
@@ -33,23 +37,12 @@ class ContactDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        /**
-         * @author 경우님
-         * */
-        //visible 설정, 번들데이터 받아오기
-        //val detailInfo: ContactInfo? = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
-
-        /**
-         * @author 이준영
-         * */
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
 
@@ -124,21 +117,13 @@ class ContactDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
+
         super.onDestroyView()
-        // 옵저버 패턴?
-        //val detailInfo = ContactInfo(1,"", "","","","",false)
-        //Owner.notifyUpdate(detailInfo)
-
-
-
-
-
     }
 
     companion object {
         // ContactListFragment에서 연락처 정보를 Bundle로 넘기기 위한 Key 값입니다.
         const val BUNDLE_KEY_FOR_CONTACT_INFO = "BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
-
     }
 
     class DeleteConfirmationDialogFragment(
@@ -154,13 +139,3 @@ class ContactDetailFragment : Fragment() {
                 .create()
     }
 }
-
-
-/*
-번들로 구분 후 invisible 설정
--> detailInfo?.rawContactId == 0 변경시 수정 필요
-
-  편집버튼 -> 프레그먼트 띄워주기, 프레그먼트에서 데이터 받아서 수정해주기 ->
-  화면 종료시 데이터 넘겨주기
-  삭제 -> 완료?
-*/

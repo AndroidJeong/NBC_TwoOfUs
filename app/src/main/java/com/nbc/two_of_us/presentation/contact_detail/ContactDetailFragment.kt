@@ -111,6 +111,7 @@ class ContactDetailFragment : Fragment() {
                     contactInfo.thumbnail
                 }
                 detailNameTextview.text = contactInfo.name
+                detailEmailTextview.text = contactInfo.email
                 detailPhonenumTextview.text = contactInfo.phone
                 detailImageView.setImageURI(uri)
             }

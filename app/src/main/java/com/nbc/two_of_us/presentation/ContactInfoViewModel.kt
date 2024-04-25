@@ -29,6 +29,18 @@ class ContactInfoViewModel : ViewModel() {
         _deletedContactLiveData.value = contactInfo
     }
 
+    /**
+     * @author 이종성
+     * 새로운 연락처가 추가되었을 때를 위함
+     * */
+    private val _newContactInfo = MutableLiveData<ContactInfo>()
+    val newContactInfo: LiveData<ContactInfo>
+        get() = _newContactInfo
+
+    fun setNewContactInfo(contactInfo: ContactInfo) {
+        _newContactInfo.value = contactInfo
+    }
+
 
     private val _contactLiveData = MutableLiveData<ContactInfo>() //바뀌는 값
     val contactLiveData : LiveData<ContactInfo>

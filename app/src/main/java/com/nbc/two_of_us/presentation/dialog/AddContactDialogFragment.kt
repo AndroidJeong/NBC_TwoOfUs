@@ -118,44 +118,34 @@ class AddContactDialogFragment(
 
         val name = binding.editTextName.text.toString()
         val num = binding.editTextPhonenumber.text.toString()
-        var address = binding.editTextEmail.text.toString()
+        val address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (name.isNotEmpty() && num.isNotEmpty()) {
-            val newContact = if (selectedImageUri != null) {
-                selectedImageUri?.let { uri ->
-                    ContactInfo(name, uri, num, address, "", false)
-                }
-            } else {
-                if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
-                    Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
-                    null
-                } else {
-                    ContactInfo(name, Uri.EMPTY, num, address, "", false)
-                }
-            }
-
-            newContact?.let { contact ->
-                val isAdded = add(contact)
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
-                    val contactInfo = Bundle().apply {
-                        putParcelable("contactInfo", contact)
-                    }
-                    parentFragmentManager.setFragmentResult("Contact", contactInfo)
-                    dismiss()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "이미 있는 연락처입니다, 다시 한번 시도해주세요",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        } else {
+        if (name.isEmpty() || num.isEmpty()) {
             Toast.makeText(requireContext(), "이름과 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+        } else if (address.isEmpty() || !address.matches(emailPattern.toRegex())) {
+            Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
         }
 
+        val newContact = ContactInfo(
+            name = name,
+            thumbnail = selectedImageUri ?: Uri.EMPTY,
+            phone = num,
+            email = address,
+            memo = "",
+            like = false,
+        )
+        if (add(newContact)) {
+            Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
+            viewModel.setNewContactInfo(newContact)
+            dismiss()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "이미 있는 연락처입니다, 다시 한번 시도해주세요",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

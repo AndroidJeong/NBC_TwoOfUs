@@ -106,17 +106,7 @@ class ContactListFragment : Fragment() {
         fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         setListener()
-
-        viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
-        }
-        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { contactInfo ->
-            adapter.update(contactInfo)
-        }
-
-        viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
-            adapter.updateList(contactList)
-        }
+        setObserve()
     }
 
     private fun setListener() = with(binding) {
@@ -181,6 +171,21 @@ class ContactListFragment : Fragment() {
         }
     }
 
+    private fun setObserve() {
+        viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.update(contactInfo)
+        }
+        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.update(contactInfo)
+        }
+        viewModel.newContactInfo.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.add(contactInfo)
+        }
+
+        viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
+            adapter.updateList(contactList)
+        }
+    }
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

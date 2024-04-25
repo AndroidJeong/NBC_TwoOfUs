@@ -17,6 +17,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
+import com.nbc.two_of_us.util.Event
 import com.nbc.two_of_us.util.MY_RAW_CONTACT_ID
 
 class ContactDetailFragment : Fragment() {
@@ -48,7 +49,7 @@ class ContactDetailFragment : Fragment() {
             detailNameTextview.text = it.name
             detailPhonenumTextview.text = it.phone
             detailEmailTextview.text = "이메일: ${it.email}"
-            detailMemoTextview.text = "메모: ${it.memo}"
+            detailLikeLikebutton.setImageResource(getLikeButtonImageRes(it.like))
 
             if (it.rawContactId == MY_RAW_CONTACT_ID) {
                 detailDeleteButton.visibility = View.GONE
@@ -63,16 +64,8 @@ class ContactDetailFragment : Fragment() {
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
                 detailEmailTextview.text = "이메일: ${it.email}"
-                detailMemoTextview.text = "메모: ${it.memo}"
             }
         }
-
-        // 데이터 받아오기
-//        binding.detailImageView.setImageURI(detailInfo?.thumbnail)
-//        binding.detailNameTextview.text = detailInfo?.name
-//        binding.detailPhonenumTextview.text = detailInfo?.phone
-//        binding.detailEmailTextview.text = "이메일: ${detailInfo?.email}"
-//        binding.detailMemoTextview.text = "메모: ${detailInfo?.memo}"
 
         //프레그먼트 종료코드?
         detailBackBackbutton.setOnClickListener {
@@ -98,27 +91,34 @@ class ContactDetailFragment : Fragment() {
             startActivity(intent)
         }
 
-        val likeButton = detailLikeLikebutton
-        var likeCheck = detailInfo?.like
-
-        likeButton.setOnClickListener {
-
-            if (likeCheck == true) {
-                likeCheck= false
-                likeButton.setImageResource(R.drawable.ic_favorite_border)
-            } else if(likeCheck == false) {
-                likeCheck = true
-                likeButton.setImageResource(R.drawable.ic_favorite)
+        detailLikeLikebutton.setOnClickListener {
+            detailInfo?.let { detailInfoNonNull ->
+                val edited = detailInfoNonNull.copy(like = !detailInfoNonNull.like)
+                viewmodel.setContactForEdit(edited)
+                detailLikeLikebutton.setImageResource(getLikeButtonImageRes(edited.like))
             }
         }
 
-        detailEditButton.setOnClickListener {
+        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) {
+//            with(it.peekContent()) {
+//                detailNameTextview.text = name
+//                detailPhonenumTextview.text = phone
+//                detailImageView.setImageURI(thumbnail)
+//            }
+            it.getContentIfNotHandled()?.let { contactInfo ->
+                detailNameTextview.text = contactInfo.name
+                detailPhonenumTextview.text = contactInfo.phone
+                detailImageView.setImageURI(contactInfo.thumbnail)
+            }
+        }
+
+        binding.detailEditButton.setOnClickListener {
             val fragmentAddDialog = AddContactDialogFragment(detailInfo)
             fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
             //AddContactDialogFragment 열고 데이터 받아오기(수정)
         }
 
-        detailDeleteButton.setOnClickListener{
+        binding.detailDeleteButton.setOnClickListener{
             detailInfo?.let {
                 DeleteConfirmationDialogFragment(it).show(
                     childFragmentManager,
@@ -126,8 +126,10 @@ class ContactDetailFragment : Fragment() {
                 )
             }
         }
+    }
 
-
+    private fun getLikeButtonImageRes(like: Boolean): Int {
+        return if(like) R.drawable.ic_favorite else R.drawable.ic_favorite_border
     }
 
     override fun onDestroyView() {
@@ -150,33 +152,9 @@ class ContactDetailFragment : Fragment() {
             AlertDialog.Builder(requireContext())
                 .setMessage(R.string.detail_fragment_delete_dialog_message_text)
                 .setPositiveButton("삭제하기") { _,_ ->
-
-                    /**
-                     * @author 이준영
-                     * list fragment에서 삭제 된 contactinfo 반영 필요!
-                     * */
-
                     ContactManager.remove(target)
                     viewmodel.setDeletedContact(target)
                     requireActivity().supportFragmentManager.popBackStack()
-
-
-
-                    /**
-                     * 삭제 후에 뒤로가기 - 확인 완료
-                     * */
-                    // Block start
-//                    if(ContactManager.remove(target)) {
-//                        viewmodel.updateList(ContactManager.getAll())
-//                    }
-
-//                    val currentList = mutableListOf<ContactInfo>()
-//                    viewmodel.contactLiveDataList.value?.let { currentList.addAll(it) }
-//                    currentList.remove(target)
-//                    viewmodel.updateList(currentList)
-                    // Block end
-
-
                 } // onPositive Lambda
                 .setNegativeButton("뒤로가기") { _,_ -> } // onNegative Lambda
                 .create()

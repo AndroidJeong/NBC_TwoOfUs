@@ -113,7 +113,6 @@ class ContactListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -139,7 +138,7 @@ class ContactListFragment : Fragment() {
                 fragmentDetail.arguments = bundle
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container_view, fragmentDetail)
+                    .replace(R.id.fragment_container_view, fragmentDetail)
                     .setReorderingAllowed(true)
                     .addToBackStack(null)
                     .commit()
@@ -196,13 +195,23 @@ class ContactListFragment : Fragment() {
             }
         }
         viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                adapter.update(it)
-            }
+//            event.getContentIfNotHandled()?.let {
+//                adapter.update(it)
+//            }
+            adapter.update(event.peekContent())
         }
         viewModel.newContactInfo.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 adapter.add(it)
+            }
+        }
+
+        /**
+         * @author 이준영
+         * */
+        viewModel.contactLiveDataForDelete.observe(viewLifecycleOwner) { contactInfo ->
+            contactInfo.peekContent().let {
+                adapter.remove(it)
             }
         }
     }

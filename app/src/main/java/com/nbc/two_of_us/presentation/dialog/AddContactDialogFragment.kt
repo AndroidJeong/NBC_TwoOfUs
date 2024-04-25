@@ -88,10 +88,12 @@ class AddContactDialogFragment(
         } else if (name.isEmpty() || num.isEmpty()) {
             Toast.makeText(requireContext(), "이름 또는 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
-        } else if (ContactManager.checkExist(num)) {
-            Toast.makeText(requireContext(), "이미 존재하는 연락처입니다.", Toast.LENGTH_SHORT).show()
-            return
         }
+
+//        else if (ContactManager.checkExist(num)) {
+//            Toast.makeText(requireContext(), "이미 존재하는 연락처입니다.", Toast.LENGTH_SHORT).show()
+//            return
+//        }
 
         val editedContact = targetContact?.copy(
             name = name,
@@ -152,6 +154,7 @@ class AddContactDialogFragment(
                 Toast.LENGTH_SHORT
             ).show()
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

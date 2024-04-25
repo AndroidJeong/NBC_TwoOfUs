@@ -36,6 +36,15 @@ class ContactAdapter :
         notifyItemChanged(index)
     }
 
+    fun remove(contactInfo: ContactInfo) {
+        val index = this.contacts.indexOfFirst { it.rawContactId == contactInfo.rawContactId }
+        if(index == -1) {
+            return
+        }
+        contacts.removeAt(index)
+        notifyItemRemoved(index)
+    }
+
     fun updateList(contactList: List<ContactInfo>) {
         contacts = contactList.toMutableList()
     }

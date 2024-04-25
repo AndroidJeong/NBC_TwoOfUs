@@ -22,7 +22,7 @@ class AddContactDialogFragment(
     private val targetContact: ContactInfo? = null
 ) : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUri: Uri? = targetContact?.thumbnail
     private val viewModel: ContactInfoViewModel by activityViewModels()
 
 
@@ -45,7 +45,7 @@ class AddContactDialogFragment(
             openGallery()
         }
         binding.btnSave.setOnClickListener {
-            if(targetContact == null) save() else saveForEdit()
+            if (targetContact == null) save() else saveForEdit()
         }
         targetOperation()
     }
@@ -55,7 +55,7 @@ class AddContactDialogFragment(
      *constructor input이 null이 아니면 default 값을 채운다.
      **/
     private fun targetOperation() {
-        if(targetContact == null) return
+        if (targetContact == null) return
         with(binding) {
             imageView.setImageURI(targetContact.thumbnail)
             editTextName.setText(targetContact.name)
@@ -82,43 +82,35 @@ class AddContactDialogFragment(
         var address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (name.isNotEmpty() && num.isNotEmpty()) {
-            val editedContact = if (selectedImageUri != null) {
-                selectedImageUri?.let { uri ->
-                    targetContact?.copy(
-                        name = name,
-                        thumbnail = uri,
-                        phone = num,
-                        email = address
-                    )
-                }
-            } else {
-                if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
-                    Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
-                    null
-                } else {
-                    targetContact?.copy(
-                        name = name,
-                        thumbnail = Uri.EMPTY,
-                        phone = num,
-                        email = address
-                    )
-                }
-            }
+        if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
+            Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
+            return
+        } else if (name.isEmpty() || num.isEmpty()) {
+            Toast.makeText(requireContext(), "이름 또는 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-            editedContact?.let { contact ->
-                val isUpdated = update(contact)
-                if (isUpdated) {
-                    viewModel.setContactForEdit(contact.copy())
-                    // viewModel.updateList(ContactManager.getAll())
-                    Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
-                    dismiss()
-                } else {
-                    Toast.makeText(requireContext(), "존재하지 않는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
-            }
+        val editedContact = targetContact?.copy(
+            name = name,
+            thumbnail = selectedImageUri ?: Uri.EMPTY,
+            phone = num,
+            email = address,
+        ) ?: ContactInfo(
+            name = name,
+            thumbnail = selectedImageUri ?: Uri.EMPTY,
+            phone = num,
+            email = address,
+            memo = "",
+            like = false,
+        )
+
+        if (update(contact = editedContact)) {
+            viewModel.setContactForEdit(editedContact)
+            Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show()
+            dismiss()
         } else {
-            Toast.makeText(requireContext(), "이름과 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "존재하지 않는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -132,22 +124,20 @@ class AddContactDialogFragment(
         if (name.isNotEmpty() && num.isNotEmpty()) {
             val newContact = if (selectedImageUri != null) {
                 selectedImageUri?.let { uri ->
-                    ContactInfo(ContactManager.getAll().size + 1, name, uri, num, address, "", false)
+                    ContactInfo(name, uri, num, address, "", false)
                 }
             } else {
                 if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
                     Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
                     null
                 } else {
-                    ContactInfo(ContactManager.getAll().size + 1, name, Uri.EMPTY, num, address, "", false)
+                    ContactInfo(name, Uri.EMPTY, num, address, "", false)
                 }
             }
 
             newContact?.let { contact ->
                 val isAdded = add(contact)
                 if (isAdded) {
-                    viewModel.updateList(ContactManager.getAll())
-
                     Toast.makeText(requireContext(), "연락처가 저장되었습니다", Toast.LENGTH_SHORT).show()
                     val contactInfo = Bundle().apply {
                         putParcelable("contactInfo", contact)
@@ -155,7 +145,11 @@ class AddContactDialogFragment(
                     parentFragmentManager.setFragmentResult("Contact", contactInfo)
                     dismiss()
                 } else {
-                    Toast.makeText(requireContext(), "이미 있는 연락처입니다, 다시 한번 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "이미 있는 연락처입니다, 다시 한번 시도해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
@@ -176,7 +170,7 @@ class AddContactDialogFragment(
                         selectedImage
                     )
                     binding.imageView.setImageBitmap(imageBitmap)
-
+                    selectedImageUri = it
                 }
             }
         }

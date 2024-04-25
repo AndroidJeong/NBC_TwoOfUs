@@ -110,6 +110,9 @@ class ContactListFragment : Fragment() {
         viewModel.contactLiveData.observe(viewLifecycleOwner) { contactInfo ->
             adapter.update(contactInfo)
         }
+        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { contactInfo ->
+            adapter.update(contactInfo)
+        }
 
         viewModel.getContactInfo().observe(viewLifecycleOwner) { contactList ->
             adapter.updateList(contactList)

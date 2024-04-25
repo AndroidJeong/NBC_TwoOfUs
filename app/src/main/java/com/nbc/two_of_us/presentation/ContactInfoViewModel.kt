@@ -15,7 +15,7 @@ class ContactInfoViewModel : ViewModel() {
     private val _contactLiveDataForEdit = MutableLiveData<ContactInfo>()
     val contactLiveDataForEdit: LiveData<ContactInfo> = _contactLiveDataForEdit
     fun setContactForEdit(contactInfo: ContactInfo) {
-        _contactLiveDataForEdit.value = contactInfo.copy()
+        _contactLiveDataForEdit.value = contactInfo
     }
 
 

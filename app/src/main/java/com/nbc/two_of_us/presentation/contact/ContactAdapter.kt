@@ -11,6 +11,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.ItemListBinding
 import com.nbc.two_of_us.databinding.ItemListGridBinding
 import com.nbc.two_of_us.databinding.ItemListReverseBinding
+import com.nbc.two_of_us.util.DEFAULT_THUMBNAIL_URI
 
 class ContactAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -132,7 +133,7 @@ class ContactAdapter :
         fun bind(contactInfo: ContactInfo) {
             binding.apply {
                 val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
-                    Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+                    Uri.parse(DEFAULT_THUMBNAIL_URI)
                 } else {
                     contactInfo.thumbnail
                 }
@@ -164,7 +165,7 @@ class ContactAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(contactInfo: ContactInfo) = with(binding) {
             val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
-                Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+                Uri.parse(DEFAULT_THUMBNAIL_URI)
             } else {
                 contactInfo.thumbnail
             }
@@ -195,7 +196,7 @@ class ContactAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(contactInfo: ContactInfo) = with(binding) {
             val uri = if (contactInfo.thumbnail == Uri.EMPTY) {
-                Uri.parse("android.resource://com.nbc.two_of_us/drawable/basic_profile")
+                Uri.parse(DEFAULT_THUMBNAIL_URI)
             } else {
                 contactInfo.thumbnail
             }

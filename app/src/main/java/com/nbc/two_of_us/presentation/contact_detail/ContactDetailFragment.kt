@@ -32,11 +32,6 @@ class ContactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val info: ContactInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO) ?: return
-        val newInfo = info.copy(like = info.like.not())
-        ContactManager.update(newInfo)
-        viewmodel.update(newInfo)
-
     }
 
     override fun onDestroyView() {

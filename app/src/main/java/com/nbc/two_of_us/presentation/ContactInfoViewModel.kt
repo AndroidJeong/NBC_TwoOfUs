@@ -1,6 +1,5 @@
 package com.nbc.two_of_us.presentation
 
-import android.provider.ContactsContract.Contacts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

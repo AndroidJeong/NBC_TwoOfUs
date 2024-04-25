@@ -1,7 +1,5 @@
 package com.nbc.two_of_us.data
 
-import android.net.Uri
-
 object ContactManager {
     // key: 연락처 정보 고유 값 Int
     // value: 연락처 정보 ContactInfo
@@ -63,5 +61,9 @@ object ContactManager {
      */
     fun checkExist(num: String): Boolean {
         return contacts.values.firstOrNull { it.phone == num } != null
+    }
+
+    fun getUserInfo(): ContactInfo? {
+        return contacts[0]
     }
 }

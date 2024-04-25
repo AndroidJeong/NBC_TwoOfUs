@@ -17,6 +17,7 @@ import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactDetailBinding
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
+import com.nbc.two_of_us.util.MY_RAW_CONTACT_ID
 
 class ContactDetailFragment : Fragment() {
 
@@ -41,15 +42,23 @@ class ContactDetailFragment : Fragment() {
 
         detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
-        if (detailInfo?.rawContactId == 0) {
+        // 하단에 MY PAGE를 눌러서 진입했는지 확인
+        detailInfo?.let {
+            detailImageView.setImageURI(it.thumbnail)
+            detailNameTextview.text = it.name
+            detailPhonenumTextview.text = it.phone
+            detailEmailTextview.text = "이메일: ${it.email}"
+            detailMemoTextview.text = "메모: ${it.memo}"
+
+            if (it.rawContactId == MY_RAW_CONTACT_ID) {
+                detailDeleteButton.visibility = View.GONE
+            }
+        } ?: run {
             detailLikeLikebutton.visibility = View.GONE
             detailBackBackbutton.visibility = View.GONE
             detailDeleteButton.visibility = View.GONE
-        }
 
-        viewmodel.setContactForEdit(detailInfo!!)
-        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
+            ContactManager.getUserInfo()?.let {
                 detailImageView.setImageURI(it.thumbnail)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone

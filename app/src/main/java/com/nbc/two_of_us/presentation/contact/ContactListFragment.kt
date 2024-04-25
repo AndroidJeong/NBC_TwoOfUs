@@ -60,11 +60,29 @@ class ContactListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (ContactManager.isEmpty()) {
+            addMyInfo()
             getContactsInfo()
         } else {
             adapter.add(ContactManager.getAll())
         }
     }
+
+    /**
+     * 사용자 정보 등록
+     */
+    private fun addMyInfo() {
+        val userInfo = ContactInfo(
+            name = "이정아",
+            thumbnail = Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_hanni"),
+            phone = "010-0000-0000",
+            email = "two@naver.com",
+            memo = "",
+            like = false,
+        )
+        ContactManager.add(userInfo)
+        adapter.add(userInfo)
+    }
+
 
     private fun getContactsInfo() {
         permissionManager.getPermission(

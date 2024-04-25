@@ -59,7 +59,11 @@ class ContactListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getContactsInfo()
+        if (ContactManager.isEmpty()) {
+            getContactsInfo()
+        } else {
+            adapter.add(ContactManager.getAll())
+        }
     }
 
     private fun getContactsInfo() {

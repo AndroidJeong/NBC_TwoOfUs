@@ -18,14 +18,21 @@ import com.nbc.two_of_us.data.ContactManager.update
 import com.nbc.two_of_us.databinding.FragmentDialogBinding
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
 import com.nbc.two_of_us.util.DEFAULT_THUMBNAIL_URI
+import com.nbc.two_of_us.util.MY_RAW_CONTACT_ID
 
-class AddContactDialogFragment(
-    private val targetContact: ContactInfo? = null
-) : DialogFragment() {
+class AddContactDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
-    private var selectedImageUri: Uri? = targetContact?.thumbnail
+    private var targetContact: ContactInfo? = null
+    private var selectedImageUri: Uri? = null
     private val viewModel: ContactInfoViewModel by activityViewModels()
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        targetContact = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO_ADD_CONTACT_DIALOG_FRAGMENT, ContactInfo::class.java)
+        selectedImageUri = targetContact?.thumbnail
+    }
 
     // XML을 이용한 커스텀 Dialog 생성시 이 함수가 아닌 onCreateView, onViewCreated 등을 사용해야 합니다.
     // https://developer.android.com/guide/fragments/dialogs
@@ -33,40 +40,45 @@ class AddContactDialogFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentDialogBinding.inflate(inflater, container, false); return binding.root
+    ): View {
+        binding = FragmentDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnCancel.setOnClickListener {
+
+        setListener()
+        targetOperation()
+    }
+
+    private fun setListener() = with(binding) {
+        btnCancel.setOnClickListener {
             dismiss()
         }
-        binding.imageView.setOnClickListener {
+        imageView.setOnClickListener {
             openGallery()
         }
-        binding.btnSave.setOnClickListener {
+        btnSave.setOnClickListener {
             if (targetContact == null) save() else saveForEdit()
         }
-        targetOperation()
     }
 
     /**
      * @author 이준영
      *constructor input이 null이 아니면 default 값을 채운다.
      **/
-    private fun targetOperation() {
-        if (targetContact == null) return
-        with(binding) {
-            val uri = if (targetContact.thumbnail == Uri.EMPTY) {
+    private fun targetOperation() = with(binding) {
+        targetContact?.let {
+            val uri = if (it.thumbnail == Uri.EMPTY) {
                 Uri.parse(DEFAULT_THUMBNAIL_URI)
             } else {
-                targetContact.thumbnail
+                it.thumbnail
             }
             imageView.setImageURI(uri)
-            editTextName.setText(targetContact.name)
-            editTextPhonenumber.setText(targetContact.phone)
-            editTextEmail.setText(targetContact.email)
+            editTextName.setText(it.name)
+            editTextPhonenumber.setText(it.phone)
+            editTextEmail.setText(it.email)
         }
     }
 
@@ -85,7 +97,7 @@ class AddContactDialogFragment(
 
         val name = binding.editTextName.text.toString()
         val num = binding.editTextPhonenumber.text.toString()
-        var address = binding.editTextEmail.text.toString()
+        val address = binding.editTextEmail.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
         if (address.isNotEmpty() && !address.matches(emailPattern.toRegex())) {
@@ -95,11 +107,6 @@ class AddContactDialogFragment(
             Toast.makeText(requireContext(), "이름 또는 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
         }
-
-//        else if (ContactManager.checkExist(num)) {
-//            Toast.makeText(requireContext(), "이미 존재하는 연락처입니다.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
 
         val editedContact = targetContact?.copy(
             name = name,
@@ -116,7 +123,12 @@ class AddContactDialogFragment(
         )
 
         if (update(contact = editedContact)) {
-            viewModel.setContactForEdit(editedContact)
+            val maxCountOfObserving = if (editedContact.rawContactId == MY_RAW_CONTACT_ID) {
+                3
+            } else {
+                2
+            }
+            viewModel.setContactForEdit(editedContact, maxCountOfObserving)
             Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show()
             dismiss()
         } else {
@@ -181,5 +193,9 @@ class AddContactDialogFragment(
                 }
             }
         }
+    }
+
+    companion object {
+        const val BUNDLE_KEY_FOR_CONTACT_INFO_ADD_CONTACT_DIALOG_FRAGMENT = "BUNDLE_KEY_FOR_CONTACT_INFO_ADD_CONTACT_DIALOG_FRAGMENT"
     }
 }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +27,19 @@ class ContactDetailFragment : Fragment() {
     private val binding: FragmentContactDetailBinding
         get() = _binding!!
 
-    private val viewmodel : ContactInfoViewModel by activityViewModels()
+    private val viewModel: ContactInfoViewModel by activityViewModels()
     private var detailInfo: ContactInfo? = null
+    private var isMyPage = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT, ContactInfo::class.java)
+
+        if (detailInfo == null) {
+            isMyPage = true
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +51,6 @@ class ContactDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
-        detailInfo = arguments?.getParcelable(BUNDLE_KEY_FOR_CONTACT_INFO)
 
         // 하단에 MY PAGE를 눌러서 진입했는지 확인
         detailInfo?.let {
@@ -61,7 +70,8 @@ class ContactDetailFragment : Fragment() {
                 detailImageView.setImageURI(uri)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
-                detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(it.email)
+                detailEmailTextview.text =
+                    getString(R.string.detail_fragment_email_format).format(it.email)
             }
         }
 
@@ -70,7 +80,7 @@ class ContactDetailFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        detailCallImagebutton.setOnClickListener{
+        detailCallImagebutton.setOnClickListener {
             val phoneNum = detailPhonenumTextview.text.toString()
             val myUri = Uri.parse("tel:${phoneNum}")
             val dialIntent = Intent(Intent.ACTION_DIAL, myUri)
@@ -94,17 +104,15 @@ class ContactDetailFragment : Fragment() {
                 val edited = detailInfoNonNull.copy(like = !detailInfoNonNull.like)
                 detailInfo = edited
                 ContactManager.update(edited)
-                viewmodel.setContactForEdit(edited)
+                viewModel.setContactForEdit(edited)
                 detailLikeLikebutton.setImageResource(getLikeButtonImageRes(edited.like))
             }
         }
 
-        viewmodel.contactLiveDataForEdit.observe(viewLifecycleOwner) {
-//            with(it.peekContent()) {
-//                detailNameTextview.text = name
-//                detailPhonenumTextview.text = phone
-//                detailImageView.setImageURI(thumbnail)
-//            }
+        viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) {
+            if (isMyPage && it.peekContent().rawContactId != MY_RAW_CONTACT_ID) {
+                return@observe
+            }
             it.getContentIfNotHandled()?.let { contactInfo ->
                 detailInfo = contactInfo
 
@@ -114,7 +122,8 @@ class ContactDetailFragment : Fragment() {
                     contactInfo.thumbnail
                 }
                 detailNameTextview.text = contactInfo.name
-                detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(contactInfo.email)
+                detailEmailTextview.text =
+                    getString(R.string.detail_fragment_email_format).format(contactInfo.email)
                 detailPhonenumTextview.text = contactInfo.phone
                 detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
                 detailImageView.setImageURI(uri)
@@ -122,12 +131,16 @@ class ContactDetailFragment : Fragment() {
         }
 
         binding.detailEditButton.setOnClickListener {
-            val fragmentAddDialog = AddContactDialogFragment(detailInfo)
+            val bundle = Bundle().apply {
+                putParcelable(AddContactDialogFragment.BUNDLE_KEY_FOR_CONTACT_INFO_ADD_CONTACT_DIALOG_FRAGMENT, detailInfo!!)
+            }
+            val fragmentAddDialog = AddContactDialogFragment()
+            fragmentAddDialog.arguments = bundle
             fragmentAddDialog.show(parentFragmentManager, "add_contact_dialog")
             //AddContactDialogFragment 열고 데이터 받아오기(수정)
         }
 
-        binding.detailDeleteButton.setOnClickListener{
+        binding.detailDeleteButton.setOnClickListener {
             detailInfo?.let {
                 DeleteConfirmationDialogFragment(it).show(
                     childFragmentManager,
@@ -146,7 +159,8 @@ class ContactDetailFragment : Fragment() {
         detailImageView.setImageURI(uri)
         detailNameTextview.text = contactInfo.name
         detailPhonenumTextview.text = contactInfo.phone
-        detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(contactInfo.email)
+        detailEmailTextview.text =
+            getString(R.string.detail_fragment_email_format).format(contactInfo.email)
         detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
 
         if (contactInfo.rawContactId == MY_RAW_CONTACT_ID) {
@@ -157,7 +171,8 @@ class ContactDetailFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        val restoredInfo: ContactInfo? = savedInstanceState?.getParcelable(BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION)
+        val restoredInfo: ContactInfo? =
+            savedInstanceState?.getParcelable(BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION)
         // 화면 회전에 의해서 이전 데이터가 복원 처리된 경우에는 UI를 화면 회전 데이터로 변경함
         if (restoredInfo != null) {
             updateUI(restoredInfo)
@@ -171,7 +186,7 @@ class ContactDetailFragment : Fragment() {
     }
 
     private fun getLikeButtonImageRes(like: Boolean): Int {
-        return if(like) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        return if (like) R.drawable.ic_favorite else R.drawable.ic_favorite_border
     }
 
     override fun onDestroyView() {
@@ -183,23 +198,24 @@ class ContactDetailFragment : Fragment() {
 
     companion object {
         // ContactListFragment에서 연락처 정보를 Bundle로 넘기기 위한 Key 값입니다.
-        const val BUNDLE_KEY_FOR_CONTACT_INFO = "BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
-        const val BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION = "BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION_BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
+        const val BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT = "BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
+        const val BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION =
+            "BUNDLE_KEY_FOR_RECOVERING_AFTER_ROTATION_BUNDLE_KEY_FOR_CONTACT_INFO_ContactDetailFragment"
     }
 
     class DeleteConfirmationDialogFragment(
         private val target: ContactInfo
     ) : DialogFragment() {
-        private val viewmodel : ContactInfoViewModel by activityViewModels()
+        private val viewmodel: ContactInfoViewModel by activityViewModels()
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
             AlertDialog.Builder(requireContext())
                 .setMessage(R.string.detail_fragment_delete_dialog_message_text)
-                .setPositiveButton("삭제하기") { _,_ ->
+                .setPositiveButton("삭제하기") { _, _ ->
                     ContactManager.remove(target)
                     viewmodel.setDeletedContact(target)
                     requireActivity().supportFragmentManager.popBackStack()
                 } // onPositive Lambda
-                .setNegativeButton("뒤로가기") { _,_ -> } // onNegative Lambda
+                .setNegativeButton("뒤로가기") { _, _ -> } // onNegative Lambda
                 .create()
     }
 }

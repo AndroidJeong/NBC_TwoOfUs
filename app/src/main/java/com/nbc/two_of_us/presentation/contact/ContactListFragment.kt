@@ -23,7 +23,7 @@ import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
-import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
+import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 
 class ContactListFragment : Fragment() {
@@ -131,7 +131,7 @@ class ContactListFragment : Fragment() {
         adapter.itemClick = object : ContactAdapter.ItemClick {
             override fun onClick(contactInfo: ContactInfo) {
                 val bundle = Bundle().apply {
-                    putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO, contactInfo)
+                    putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT, contactInfo)
                 }
 
                 val fragmentDetail = ContactDetailFragment()

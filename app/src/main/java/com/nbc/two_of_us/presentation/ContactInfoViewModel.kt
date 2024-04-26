@@ -15,8 +15,8 @@ class ContactInfoViewModel : ViewModel() {
      * */
     private val _contactLiveDataForEdit = MutableLiveData<Event<ContactInfo>>()
     val contactLiveDataForEdit: LiveData<Event<ContactInfo>> = _contactLiveDataForEdit
-    fun setContactForEdit(contactInfo: ContactInfo) {
-        _contactLiveDataForEdit.value = Event(contactInfo, count = 2)
+    fun setContactForEdit(contactInfo: ContactInfo, count: Int = 2) {
+        _contactLiveDataForEdit.value = Event(contactInfo, count = count)
     }
 
 

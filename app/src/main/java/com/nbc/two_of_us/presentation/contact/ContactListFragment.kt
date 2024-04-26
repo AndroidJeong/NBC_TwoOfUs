@@ -189,11 +189,6 @@ class ContactListFragment : Fragment() {
     }
 
     private fun setObserve() {
-        viewModel.contactLiveData.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                adapter.update(it)
-            }
-        }
         viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 adapter.update(it)

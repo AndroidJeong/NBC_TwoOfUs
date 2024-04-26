@@ -93,6 +93,7 @@ class ContactDetailFragment : Fragment() {
             detailInfo?.let { detailInfoNonNull ->
                 val edited = detailInfoNonNull.copy(like = !detailInfoNonNull.like)
                 detailInfo = edited
+                ContactManager.update(edited)
                 viewmodel.setContactForEdit(edited)
                 detailLikeLikebutton.setImageResource(getLikeButtonImageRes(edited.like))
             }

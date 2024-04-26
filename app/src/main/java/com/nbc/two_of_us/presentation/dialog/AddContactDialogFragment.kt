@@ -134,8 +134,10 @@ class AddContactDialogFragment(
 
         if (name.isEmpty() || num.isEmpty()) {
             Toast.makeText(requireContext(), "이름과 전화번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
         } else if (address.isEmpty() || !address.matches(emailPattern.toRegex())) {
             Toast.makeText(requireContext(), "올바른 이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show()
+            return
         } else if (ContactManager.checkExist(num)) {
             Toast.makeText(requireContext(), "이미 존재하는 연락처 번호입니다.", Toast.LENGTH_SHORT).show()
             return

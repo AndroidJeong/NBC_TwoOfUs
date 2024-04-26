@@ -15,5 +15,5 @@
     <string name="detail_fragment_delete_dialog_message_negative">돌아가기</string>
     <string name="detail_fragment_delete_dialog_message_positive">삭제</string>
 
-    <string name="detail_fragment_email_format">이메일 : $s</string>
+    <string name="detail_fragment_email_format">이메일 : %1$s</string>
 </resources>

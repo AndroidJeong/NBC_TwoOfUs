@@ -61,7 +61,7 @@ class ContactDetailFragment : Fragment() {
                 detailImageView.setImageURI(uri)
                 detailNameTextview.text = it.name
                 detailPhonenumTextview.text = it.phone
-                detailEmailTextview.text = "이메일: ${it.email}"
+                detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(it.email)
             }
         }
 
@@ -113,7 +113,7 @@ class ContactDetailFragment : Fragment() {
                     contactInfo.thumbnail
                 }
                 detailNameTextview.text = contactInfo.name
-                detailEmailTextview.text = contactInfo.email
+                detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(contactInfo.email)
                 detailPhonenumTextview.text = contactInfo.phone
                 detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
                 detailImageView.setImageURI(uri)
@@ -145,7 +145,7 @@ class ContactDetailFragment : Fragment() {
         detailImageView.setImageURI(uri)
         detailNameTextview.text = contactInfo.name
         detailPhonenumTextview.text = contactInfo.phone
-        detailEmailTextview.text = "이메일: ${contactInfo.email}"
+        detailEmailTextview.text = getString(R.string.detail_fragment_email_format).format(contactInfo.email)
         detailLikeLikebutton.setImageResource(getLikeButtonImageRes(contactInfo.like))
 
         if (contactInfo.rawContactId == MY_RAW_CONTACT_ID) {

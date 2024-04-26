@@ -15,7 +15,7 @@ open class Event<out T>(private val content: T, private var count: Int = 1) {
             if (hasBeenHandled) {
                 null
             } else {
-                if (count-- <= 0) {
+                if (--count <= 0) {
                     hasBeenHandled = true
                 }
                 content

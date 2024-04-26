@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="seed">#ffffff</color>
+    <color name="md_theme_light_primary">#21C174</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#21C174</color> //하단 버튼 터치 색
+    <color name="md_theme_light_onPrimaryContainer">#000000</color> //하단 버튼 바탕색
+    <color name="md_theme_light_secondary">#21C174</color>
+    <color name="md_theme_light_onSecondary">#000000</color>
+    <color name="md_theme_light_secondaryContainer">#21C174</color>
+    <color name="md_theme_light_onSecondaryContainer">#21C174</color>
+    <color name="md_theme_light_tertiary">#21C174</color>
+    <color name="md_theme_light_onTertiary">#21C174</color>
+
+    <color name="md_theme_light_tertiaryContainer">#FFFFFF</color> //상단메뉴색
+    <color name="md_theme_light_onTertiaryContainer">#FFFFFF</color>
+
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+
+    <color name="md_theme_light_background">#21C174</color> //메뉴창 바탕색
+    <color name="md_theme_light_onBackground">#000000</color>
+    <color name="md_theme_light_surface">#FFFFFF</color> /하단바 색상
+    <color name="md_theme_light_onSurface">#000000</color>
+    <color name="md_theme_light_surfaceVariant">#F6F6F6</color> /상단바색상
+    <color name="md_theme_light_onSurfaceVariant">#000000</color>
+    <color name="md_theme_light_outline">#21C174</color>
+    <color name="md_theme_light_inverseOnSurface">#009688</color>
+    <color name="md_theme_light_inverseSurface">#00BCD4</color>
+    <color name="md_theme_light_inversePrimary">#03A9F4</color>
+    <color name="md_theme_light_shadow">#000000</color>
+    <color name="md_theme_light_surfaceTint">#009688</color>
+    <color name="md_theme_light_outlineVariant">#000000</color>
+    <color name="md_theme_light_scrim">#000000</color>
+
+
+    <color name="md_theme_dark_primary">#4FD8EB</color>
+    <color name="md_theme_dark_onPrimary">#00363D</color>
+    <color name="md_theme_dark_primaryContainer">#004F58</color>
+    <color name="md_theme_dark_onPrimaryContainer">#97F0FF</color>
+    <color name="md_theme_dark_secondary">#74D1FF</color>
+    <color name="md_theme_dark_onSecondary">#003548</color>
+    <color name="md_theme_dark_secondaryContainer">#004D67</color>
+    <color name="md_theme_dark_onSecondaryContainer">#C1E8FF</color>
+    <color name="md_theme_dark_tertiary">#92CCFF</color>
+    <color name="md_theme_dark_onTertiary">#003351</color>
+    <color name="md_theme_dark_tertiaryContainer">#004B73</color>
+    <color name="md_theme_dark_onTertiaryContainer">#CCE5FF</color>
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_theme_dark_background">#001B3D</color>
+    <color name="md_theme_dark_onBackground">#D6E3FF</color>
+    <color name="md_theme_dark_surface">#001B3D</color>
+    <color name="md_theme_dark_onSurface">#D6E3FF</color>
+    <color name="md_theme_dark_surfaceVariant">#3F484A</color>
+    <color name="md_theme_dark_onSurfaceVariant">#BFC8CA</color>
+    <color name="md_theme_dark_outline">#899294</color>
+    <color name="md_theme_dark_inverseOnSurface">#001B3D</color>
+    <color name="md_theme_dark_inverseSurface">#D6E3FF</color>
+    <color name="md_theme_dark_inversePrimary">#F6F6F6</color>
+    <color name="md_theme_dark_shadow">#000000</color>
+    <color name="md_theme_dark_surfaceTint">#4FD8EB</color>
+    <color name="md_theme_dark_outlineVariant">#3F484A</color>
+    <color name="md_theme_dark_scrim">#000000</color>
+    <color name="black">#000000</color>
 </resources>

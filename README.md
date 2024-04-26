@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/AndroidJeong/team2_contactapp">
+  <a href="https://github.com/AndroidJeong/NBC_TwoOfUs/tree/master">
     <img src="https://github.com/AndroidJeong/team2_contactapp/assets/48354989/436ec8fb-999b-4b3f-92fd-af3ecc8023be" alt="Logo" width="400" height="400">
   </a>
 
@@ -12,7 +12,7 @@
     <br />
       <a href="https://picayune-whimsey-cb6.notion.site/S-A-45646d1f43d04c0f8c27908712d67d7a"><strong>S.A »</strong></a>
     <br />
-    <a href="">Video Demo</a>
+    <a href="https://youtu.be/hlVwDCYl1Lw">Video Demo</a>
   </p>
 </div>
 

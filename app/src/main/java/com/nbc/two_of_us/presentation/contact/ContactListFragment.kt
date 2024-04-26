@@ -43,6 +43,8 @@ class ContactListFragment : Fragment() {
         ContactDatasource(requireContext())
     }
 
+    private var isLinearLayoutManager = true
+
     private val contactsPermissionDialog by lazy {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.contacts_permission_dialog_title))
@@ -119,11 +121,31 @@ class ContactListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentListListRecyclerView.adapter = adapter
-        fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+        setRecyclerView()
         setListener()
         setObserve()
+    }
+
+    private fun setRecyclerView() = with(binding) {
+        fragmentListListRecyclerView.adapter = adapter
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean(BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER, isLinearLayoutManager)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) = with(binding) {
+        super.onViewStateRestored(savedInstanceState)
+
+        isLinearLayoutManager = savedInstanceState?.getBoolean(BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER) ?: true
+
+        fragmentListListRecyclerView.layoutManager = if (isLinearLayoutManager) {
+            LinearLayoutManager(requireContext())
+        } else {
+            GridLayoutManager(requireContext(), NUM_FOR_GRID_LAYOUT_MANAGER_ITEM)
+        }
     }
 
     private fun setListener() = with(binding) {
@@ -165,6 +187,7 @@ class ContactListFragment : Fragment() {
                             fragmentListListRecyclerView.layoutManager =
                                 LinearLayoutManager(requireContext())
                         }
+                        isLinearLayoutManager = true
                         true
                     }
 
@@ -172,8 +195,9 @@ class ContactListFragment : Fragment() {
                         setLayoutType(LayoutType.GRID)
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager =
-                                GridLayoutManager(requireContext(), 4)
+                                GridLayoutManager(requireContext(), NUM_FOR_GRID_LAYOUT_MANAGER_ITEM)
                         }
+                        isLinearLayoutManager = false
                         true
                     }
 
@@ -212,5 +236,10 @@ class ContactListFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        private const val BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER = "BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER"
+        private const val NUM_FOR_GRID_LAYOUT_MANAGER_ITEM = 4
     }
 }

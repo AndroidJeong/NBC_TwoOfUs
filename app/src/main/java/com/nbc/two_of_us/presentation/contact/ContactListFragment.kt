@@ -23,7 +23,7 @@ import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment
-import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO
+import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment.Companion.BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT
 import com.nbc.two_of_us.presentation.dialog.AddContactDialogFragment
 
 class ContactListFragment : Fragment() {
@@ -42,6 +42,8 @@ class ContactListFragment : Fragment() {
     private val contactDatasource by lazy {
         ContactDatasource(requireContext())
     }
+
+    private var isLinearLayoutManager = true
 
     private val contactsPermissionDialog by lazy {
         AlertDialog.Builder(requireContext())
@@ -74,7 +76,7 @@ class ContactListFragment : Fragment() {
         val userInfo = ContactInfo(
             name = "이정아",
             thumbnail = Uri.parse("android.resource://com.nbc.two_of_us/drawable/sample_hanni"),
-            phone = "010-0000-0000",
+            phone = "01000000000",
             email = "two@naver.com",
             memo = "",
             like = false,
@@ -119,11 +121,31 @@ class ContactListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentListListRecyclerView.adapter = adapter
-        fragmentListListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+        setRecyclerView()
         setListener()
         setObserve()
+    }
+
+    private fun setRecyclerView() = with(binding) {
+        fragmentListListRecyclerView.adapter = adapter
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean(BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER, isLinearLayoutManager)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) = with(binding) {
+        super.onViewStateRestored(savedInstanceState)
+
+        isLinearLayoutManager = savedInstanceState?.getBoolean(BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER) ?: true
+
+        fragmentListListRecyclerView.layoutManager = if (isLinearLayoutManager) {
+            LinearLayoutManager(requireContext())
+        } else {
+            GridLayoutManager(requireContext(), NUM_FOR_GRID_LAYOUT_MANAGER_ITEM)
+        }
     }
 
     private fun setListener() = with(binding) {
@@ -131,7 +153,7 @@ class ContactListFragment : Fragment() {
         adapter.itemClick = object : ContactAdapter.ItemClick {
             override fun onClick(contactInfo: ContactInfo) {
                 val bundle = Bundle().apply {
-                    putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO, contactInfo)
+                    putParcelable(BUNDLE_KEY_FOR_CONTACT_INFO_CONTACT_DETAIL_FRAGMENT, contactInfo)
                 }
 
                 val fragmentDetail = ContactDetailFragment()
@@ -165,6 +187,7 @@ class ContactListFragment : Fragment() {
                             fragmentListListRecyclerView.layoutManager =
                                 LinearLayoutManager(requireContext())
                         }
+                        isLinearLayoutManager = true
                         true
                     }
 
@@ -172,8 +195,9 @@ class ContactListFragment : Fragment() {
                         setLayoutType(LayoutType.GRID)
                         binding.apply {
                             fragmentListListRecyclerView.layoutManager =
-                                GridLayoutManager(requireContext(), 4)
+                                GridLayoutManager(requireContext(), NUM_FOR_GRID_LAYOUT_MANAGER_ITEM)
                         }
+                        isLinearLayoutManager = false
                         true
                     }
 
@@ -189,11 +213,6 @@ class ContactListFragment : Fragment() {
     }
 
     private fun setObserve() {
-        viewModel.contactLiveData.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                adapter.update(it)
-            }
-        }
         viewModel.contactLiveDataForEdit.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 adapter.update(it)
@@ -217,5 +236,10 @@ class ContactListFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        private const val BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER = "BUNDLE_KEY_FOR_IS_LINEAR_LAYOUT_MANAGER"
+        private const val NUM_FOR_GRID_LAYOUT_MANAGER_ITEM = 4
     }
 }

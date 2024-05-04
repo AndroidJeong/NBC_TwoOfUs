@@ -4,12 +4,6 @@ import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-/**
-
-연락처 정보를 나타내는 클래스 입니다.
-[이 줄과 아래 내용은 구현 후에 삭제해주세요.]
-해당 데이터를 수정해야 하는 경우, var로 변경해서 수정하지 마시고, data class의 copy를 이용해주세요.
- */
 @Parcelize
 data class ContactInfo(
     val name: String, // 이름
@@ -23,8 +17,7 @@ data class ContactInfo(
 
     companion object {
         var id: Int = 0
-            get() = synchronized(this) {
-                field++
-            }
+            get() = field++
+            private set
     }
 }

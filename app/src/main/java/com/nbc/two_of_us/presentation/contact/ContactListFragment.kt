@@ -16,10 +16,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbc.two_of_us.R
+import com.nbc.two_of_us.data.ContactDatasource
 import com.nbc.two_of_us.data.ContactInfo
 import com.nbc.two_of_us.data.ContactManager
 import com.nbc.two_of_us.databinding.FragmentContactListBinding
-import com.nbc.two_of_us.permission.ContactDatasource
 import com.nbc.two_of_us.permission.PermissionManager
 import com.nbc.two_of_us.presentation.ContactInfoViewModel
 import com.nbc.two_of_us.presentation.contact_detail.ContactDetailFragment

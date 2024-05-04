@@ -1,4 +1,4 @@
-package com.nbc.two_of_us.permission
+package com.nbc.two_of_us.data
 
 import android.content.Context
 import android.provider.ContactsContract
@@ -6,10 +6,10 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Note
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.core.net.toUri
-import com.nbc.two_of_us.data.ContactInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ContactDatasource(context: Context) {
 
@@ -24,16 +24,9 @@ class ContactDatasource(context: Context) {
 
     private val resolver = context.contentResolver
 
-    /**
-     * 수정 중 ~~~
-     * */
-    fun addContact(contactInfo: ContactInfo) {
-        contactInfoList.add(contactInfo)
-    }
-
     fun getAllContacts(callback: (List<ContactInfo>) -> Unit) {
 
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val phoneCursor = resolver.query(
                 Phone.CONTENT_URI,
                 phoneProjection,
@@ -97,7 +90,7 @@ class ContactDatasource(context: Context) {
                                 val nIdIndex = noteCursorNonNull.getColumnIndex(noteProjection[0])
                                 val nNoteIndex = noteCursorNonNull.getColumnIndex(noteProjection[1])
                                 val nId = noteCursorNonNull.getString(nIdIndex)
-                                note = noteCursorNonNull.getString(nNoteIndex)?:""
+                                note = noteCursorNonNull.getString(nNoteIndex) ?: ""
                             }
                         }
 
@@ -114,8 +107,9 @@ class ContactDatasource(context: Context) {
                     }
                 }
             }
-
-            callback(contactInfoList)
+            withContext(Dispatchers.Main) {
+                callback(contactInfoList)
+            }
         }
     }
 }

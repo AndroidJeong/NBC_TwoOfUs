@@ -20,6 +20,9 @@ class ContactAdapter :
     private var contacts: MutableList<ContactInfo> = mutableListOf()
 
     fun add(contacts: List<ContactInfo>) {
+        if (contacts.isEmpty()) {
+            return
+        }
         this.contacts.addAll(contacts)
         notifyItemInserted(contacts.size)
     }
@@ -45,10 +48,6 @@ class ContactAdapter :
         }
         contacts.removeAt(index)
         notifyItemRemoved(index)
-    }
-
-    fun updateList(contactList: List<ContactInfo>) {
-        contacts = contactList.toMutableList()
     }
 
     interface ItemClick {

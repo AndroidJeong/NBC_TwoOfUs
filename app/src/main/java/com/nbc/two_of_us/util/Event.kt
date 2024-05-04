@@ -1,6 +1,6 @@
 package com.nbc.two_of_us.util
 
-open class Event<out T>(private val content: T, private var count: Int = 1) {
+class Event<out T>(private val content: T, private var count: Int = 1) {
 
     @Suppress("MemberVisibilityCanBePrivate")
     var hasBeenHandled = false

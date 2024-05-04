@@ -1,4 +1,4 @@
-package com.nbc.two_of_us.permission
+package com.nbc.two_of_us.data
 
 import android.content.Context
 import android.provider.ContactsContract
@@ -6,7 +6,6 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.CommonDataKinds.Note
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.core.net.toUri
-import com.nbc.two_of_us.data.ContactInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
